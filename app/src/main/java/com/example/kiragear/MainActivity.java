@@ -127,10 +127,12 @@ public class MainActivity extends AppCompatActivity {
         lineChart.setData(new LineData(dataSets));
 
         lineChart.getDescription().setText("Line Chart");
-        lineChart.getDescription().setTextColor(Color.WHITE);
-        lineChart.getAxisLeft().setTextColor(Color.WHITE);
-        lineChart.getXAxis().setTextColor(Color.WHITE);
+        lineChart.getDescription().setTextColor(Color.BLACK);
+        lineChart.getAxisLeft().setTextColor(Color.BLACK);
+        lineChart.getXAxis().setTextColor(Color.BLACK);
         lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+
+        lineChart.getAxisRight().setEnabled(false);
 
         YAxis leftAxis = lineChart.getAxisLeft();
         leftAxis.setAxisMinimum(0);
