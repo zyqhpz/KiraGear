@@ -8,6 +8,7 @@
     android:orientation="vertical"
     android:padding="16dp"
     android:id="@+id/main_layout"
+    android:background="#ffffff"
     tools:context=".MainActivity">
 
     <com.github.mikephil.charting.charts.BarChart
