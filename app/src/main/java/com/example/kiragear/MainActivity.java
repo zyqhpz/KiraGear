@@ -33,8 +33,9 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Entry> lineEntries = new ArrayList<Entry>();
     ArrayList<Entry> progressiveLineEntries = new ArrayList<Entry>();
 
-    List<Gear> gears = new ArrayList<Gear>();
-
+    ArrayList<Entry> lineEntries1 = new ArrayList<Entry>();
+    ArrayList<Entry> progressiveLineEntries1 = new ArrayList<Entry>();
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,8 +66,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         lineChart = findViewById(R.id.line_chart);
 
-//        calculateGear();
-        calculateGear1();
+        generateGraph();
 
         // barChart = binding.barChart;
         // pieChart = binding.pieChart;
@@ -93,14 +93,27 @@ public class MainActivity extends AppCompatActivity {
         LineDataSet progressivelineDataSet = new LineDataSet(progressiveLineEntries, "Progressive Line");
         progressivelineDataSet.enableDashedLine(3, 20, 0);
         progressivelineDataSet.setLineWidth(2f);
+        progressivelineDataSet.setColor(Color.BLUE);
 
         LineDataSet lineDataSet = new LineDataSet(lineEntries, "Line Data");
         // lineDataSet.enableDashedLine(3, 20, 0);
-        lineDataSet.setLineWidth(3f);
+        lineDataSet.setLineWidth(2f);
+        lineDataSet.setColor(Color.BLUE);
+
+        LineDataSet progressivelineDataSet1 = new LineDataSet(progressiveLineEntries1, "Progressive Line 1");
+        progressivelineDataSet.enableDashedLine(3, 20, 0);
+        progressivelineDataSet.setLineWidth(2f);
+        progressivelineDataSet1.setColor(Color.RED);
+
+        LineDataSet lineDataSet1 = new LineDataSet(lineEntries1, "Line Data 2");
+        lineDataSet1.setLineWidth(2f);
+        lineDataSet1.setColors(Color.RED);
 
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
         dataSets.add(lineDataSet);
+        dataSets.add(lineDataSet1);
         dataSets.add(progressivelineDataSet);
+        dataSets.add(progressivelineDataSet1);
 
         // lineChart.setData(new LineData(lineDataSet));
         lineChart.setData(new LineData(dataSets));
@@ -111,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
         lineChart.getXAxis().setTextColor(Color.BLACK);
         lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
 
-//        lineChart.getXAxis().setDrawGridLines(false);
+        // lineChart.getXAxis().setDrawGridLines(false);
 
         lineChart.getAxisRight().setEnabled(false);
 
@@ -131,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
         // lineChart.getXAxis().mAxisMinimum = 0;
         lineChart.getXAxis().setAxisMinimum(0);
         lineChart.getXAxis().setAxisMaximum(250);
-        lineChart.getXAxis().setAxisMaximum(gears.get(4).getrRpmSpeeds().get(8000).floatValue() + 10);
+//        lineChart.getXAxis().setAxisMaximum(gears.get(4).getrRpmSpeeds().get(8000).floatValue() + 10);
 
         // lineChart.getXAxis().mAxisMaximum = 200;
 
@@ -159,6 +172,11 @@ public class MainActivity extends AppCompatActivity {
         // IndexAxisValueFormatter(xAxisLables));
     }
 
+    public void generateGraph() {
+        calculateGear();
+        calculateGear1();
+    }
+
     public void calculateGear() {
         Tire tire = new Tire();
         Gear gear = new Gear();
@@ -175,6 +193,8 @@ public class MainActivity extends AppCompatActivity {
 
         double[] ratio = { 2.976190476, 2.105263158, 1.615508885, 1.277139208, 1.030927835 };
 
+        List<Gear> gears = new ArrayList<Gear>();
+
         for (int i = 0; i < ratio.length; i++) {
             gear = new Gear();
             gear.setRatio(ratio[i]);
@@ -190,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
         tuning.calculateSpeed(7000, finalDrive);
         tuning.calculateSpeeds(finalDrive);
 
-        this.gears = tuning.getGears();
+        gears = tuning.getGears();
 
         for (int i = 0; i < gears.size(); i++) {
             if (i != 4) {
@@ -201,13 +221,13 @@ public class MainActivity extends AppCompatActivity {
 
                 double rpm = calculateRPM(last, gears.get(i + 1).getRatio(), tireCircumference, finalDrive);
 
-                System.out.println(last);
-                System.out.println(rpm);
                 progressivePointRPM.add(rpm);
                 progressivePointSpeed.add(last);
             }
         }
-        constructData(gears, progressivePointRPM, progressivePointSpeed);
+        lineEntries = constData(gears, progressivePointRPM, progressivePointSpeed);
+        progressiveLineEntries = constructProgressiveLine(progressivePointRPM, progressivePointSpeed);
+//         constructData(lineEntries, progressiveLineEntries, gears, progressivePointRPM, progressivePointSpeed);
     }
 
     public void calculateGear1() {
@@ -226,13 +246,15 @@ public class MainActivity extends AppCompatActivity {
 
         double[] ratio = { 2.976190476, 2.105263158, 1.615508885, 1.277139208, 1.030927835 };
 
+        List<Gear> gears = new ArrayList<Gear>();
+
         for (int i = 0; i < ratio.length; i++) {
             gear = new Gear();
             gear.setRatio(ratio[i]);
             gears.add(gear);
         }
 
-        double finalDrive = 5;
+        double finalDrive = 5.0;
 
         tuning.setGears(gears);
 
@@ -241,7 +263,7 @@ public class MainActivity extends AppCompatActivity {
         tuning.calculateSpeed(7000, finalDrive);
         tuning.calculateSpeeds(finalDrive);
 
-        this.gears = tuning.getGears();
+        gears = tuning.getGears();
 
         for (int i = 0; i < gears.size(); i++) {
             if (i != 4) {
@@ -251,18 +273,21 @@ public class MainActivity extends AppCompatActivity {
                 double last = speed.get(speed.size() - 1);
 
                 double rpm = calculateRPM(last, gears.get(i + 1).getRatio(), tireCircumference, finalDrive);
-
-                System.out.println(last);
-                System.out.println(rpm);
                 progressivePointRPM.add(rpm);
                 progressivePointSpeed.add(last);
             }
         }
 
-        constructData(gears, progressivePointRPM, progressivePointSpeed);
+        lineEntries1 = constData(gears, progressivePointRPM, progressivePointSpeed);
+
+        progressiveLineEntries1 = constructProgressiveLine(progressivePointRPM, progressivePointSpeed);
+
+//         constructData(lineEntries1, progressiveLineEntries1, gears, progressivePointRPM, progressivePointSpeed);
     }
 
-    public void constructData(List<Gear> gears, ArrayList<Double> progressivePointRPM, ArrayList<Double> progressivePointSpeed) {
+    public void constructData(ArrayList<Entry> lineEntries, ArrayList<Entry> progressiveLineEntries, List<Gear> gears,
+            ArrayList<Double> progressivePointRPM,
+            ArrayList<Double> progressivePointSpeed) {
 
         HashMap<Integer, Double> rpmSpeed1 = gears.get(0).getrRpmSpeeds();
         HashMap<Integer, Double> rpmSpeed5 = gears.get(4).getrRpmSpeeds();
@@ -289,7 +314,87 @@ public class MainActivity extends AppCompatActivity {
                 .add(new Entry(progressivePointSpeed.get(3).floatValue(), progressivePointRPM.get(3).floatValue()));
     }
 
+    public void constructData1(ArrayList<Entry> progressiveLineEntries, List<Gear> gears,
+            ArrayList<Double> progressivePointRPM,
+            ArrayList<Double> progressivePointSpeed) {
+
+        HashMap<Integer, Double> rpmSpeed1 = gears.get(0).getrRpmSpeeds();
+        HashMap<Integer, Double> rpmSpeed5 = gears.get(4).getrRpmSpeeds();
+
+        lineEntries1.add(new Entry(0f, 0f));
+        lineEntries1.add(new Entry(rpmSpeed1.get(8000).floatValue(), 8000f));
+        lineEntries1.add(new Entry(progressivePointSpeed.get(0).floatValue(), 8000f));
+        lineEntries1.add(new Entry(progressivePointSpeed.get(0).floatValue(), progressivePointRPM.get(0).floatValue()));
+        lineEntries1.add(new Entry(progressivePointSpeed.get(1).floatValue(), 8000f));
+        lineEntries1.add(new Entry(progressivePointSpeed.get(1).floatValue(), progressivePointRPM.get(1).floatValue()));
+        lineEntries1.add(new Entry(progressivePointSpeed.get(2).floatValue(), 8000f));
+        lineEntries1.add(new Entry(progressivePointSpeed.get(2).floatValue(), progressivePointRPM.get(2).floatValue()));
+        lineEntries1.add(new Entry(progressivePointSpeed.get(3).floatValue(), 8000f));
+        lineEntries1.add(new Entry(progressivePointSpeed.get(3).floatValue(), progressivePointRPM.get(3).floatValue()));
+        lineEntries1.add(new Entry(rpmSpeed5.get(8000).floatValue(), 8000f));
+
+        progressiveLineEntries1
+                .add(new Entry(progressivePointSpeed.get(0).floatValue(), progressivePointRPM.get(0).floatValue()));
+        progressiveLineEntries
+                .add(new Entry(progressivePointSpeed.get(1).floatValue(), progressivePointRPM.get(1).floatValue()));
+        progressiveLineEntries1
+                .add(new Entry(progressivePointSpeed.get(2).floatValue(), progressivePointRPM.get(2).floatValue()));
+        progressiveLineEntries1
+                .add(new Entry(progressivePointSpeed.get(3).floatValue(), progressivePointRPM.get(3).floatValue()));
+    }
+
+    public ArrayList<Entry> constructProgressiveLine(ArrayList<Double> progressivePointRPM, ArrayList<Double> progressivePointSpeed) {
+        ArrayList<Entry> progressiveLineEntries = new ArrayList<Entry>();
+
+        progressiveLineEntries
+                .add(new Entry(progressivePointSpeed.get(0).floatValue(), progressivePointRPM.get(0).floatValue()));
+        progressiveLineEntries
+                .add(new Entry(progressivePointSpeed.get(1).floatValue(), progressivePointRPM.get(1).floatValue()));
+        progressiveLineEntries
+                .add(new Entry(progressivePointSpeed.get(2).floatValue(), progressivePointRPM.get(2).floatValue()));
+        progressiveLineEntries
+                .add(new Entry(progressivePointSpeed.get(3).floatValue(), progressivePointRPM.get(3).floatValue()));
+
+        return progressiveLineEntries;
+    }
+
     public double calculateRPM(double speed, double ratio, double tireCircumference, double finalDrive) {
         return (speed * ratio * finalDrive) / (tireCircumference * 0.001 * 60);
+    }
+
+    public ArrayList<Entry> constData(List<Gear> gears, ArrayList<Double> progressivePointRPM,
+            ArrayList<Double> progressivePointSpeed) {
+
+        ArrayList<Entry> lineEntries = new ArrayList<Entry>();
+
+        HashMap<Integer, Double> rpmSpeed1 = gears.get(0).getrRpmSpeeds();
+        HashMap<Integer, Double> rpmSpeed5 = gears.get(4).getrRpmSpeeds();
+
+        lineEntries.add(new Entry(0f, 0f));
+        lineEntries.add(new Entry(rpmSpeed1.get(8000).floatValue(), 8000f));
+        lineEntries.add(new Entry(progressivePointSpeed.get(0).floatValue(), 8000f));
+        lineEntries.add(new Entry(progressivePointSpeed.get(0).floatValue(), progressivePointRPM.get(0).floatValue()));
+        lineEntries.add(new Entry(progressivePointSpeed.get(1).floatValue(), 8000f));
+        lineEntries.add(new Entry(progressivePointSpeed.get(1).floatValue(), progressivePointRPM.get(1).floatValue()));
+        lineEntries.add(new Entry(progressivePointSpeed.get(2).floatValue(), 8000f));
+        lineEntries.add(new Entry(progressivePointSpeed.get(2).floatValue(), progressivePointRPM.get(2).floatValue()));
+        lineEntries.add(new Entry(progressivePointSpeed.get(3).floatValue(), 8000f));
+        lineEntries.add(new Entry(progressivePointSpeed.get(3).floatValue(), progressivePointRPM.get(3).floatValue()));
+        lineEntries.add(new Entry(rpmSpeed5.get(8000).floatValue(), 8000f));
+
+        // progressiveLineEntries
+        // .add(new Entry(progressivePointSpeed.get(0).floatValue(),
+        // progressivePointRPM.get(0).floatValue()));
+        // progressiveLineEntries
+        // .add(new Entry(progressivePointSpeed.get(1).floatValue(),
+        // progressivePointRPM.get(1).floatValue()));
+        // progressiveLineEntries
+        // .add(new Entry(progressivePointSpeed.get(2).floatValue(),
+        // progressivePointRPM.get(2).floatValue()));
+        // progressiveLineEntries
+        // .add(new Entry(progressivePointSpeed.get(3).floatValue(),
+        // progressivePointRPM.get(3).floatValue()));
+
+        return lineEntries;
     }
 }
