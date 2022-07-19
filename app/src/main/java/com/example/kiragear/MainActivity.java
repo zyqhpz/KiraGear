@@ -29,16 +29,11 @@ import model.Gear;
 
 public class MainActivity extends AppCompatActivity {
 
-    BarChart barChart;
-    PieChart pieChart;
     LineChart lineChart;
-
-    ArrayList<BarEntry> barEntries = new ArrayList<>();
     ArrayList<Entry> lineEntries = new ArrayList<Entry>();
     ArrayList<Entry> progressiveLineEntries = new ArrayList<Entry>();
 
-    ArrayList<Double> progressivePointRPM = new ArrayList<>();
-    ArrayList<Double> progressivePointSpeed = new ArrayList<>();
+    List<Gear> gears = new ArrayList<Gear>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,12 +63,10 @@ public class MainActivity extends AppCompatActivity {
         // li.setBackgroundColor(Color.rgb(226, 11, 11));
 
         setContentView(R.layout.activity_main);
-
-        barChart = findViewById(R.id.bar_chart);
-        pieChart = findViewById(R.id.pie_chart);
         lineChart = findViewById(R.id.line_chart);
 
-        calculateGear();
+//        calculateGear();
+        calculateGear1();
 
         // barChart = binding.barChart;
         // pieChart = binding.pieChart;
@@ -94,20 +87,6 @@ public class MainActivity extends AppCompatActivity {
         // lineEntries.add(new Entry(57, 6000));
         // lineEntries.add(new Entry(67, 7000));
         // lineEntries.add(new Entry(77, 8000));
-
-        BarDataSet barDataSet = new BarDataSet(barEntries, "Bar Data");
-
-        barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-
-        barDataSet.setDrawValues(false);
-
-        barChart.setData(new BarData(barDataSet));
-
-        barChart.animateY(1000);
-
-        barChart.getDescription().setText("Bar Chart");
-        barChart.getDescription().setTextColor(Color.WHITE);
-        barChart.getAxisLeft().setTextColor(Color.WHITE);
 
         lineChart.setScaleEnabled(false);
 
@@ -132,6 +111,8 @@ public class MainActivity extends AppCompatActivity {
         lineChart.getXAxis().setTextColor(Color.BLACK);
         lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
 
+//        lineChart.getXAxis().setDrawGridLines(false);
+
         lineChart.getAxisRight().setEnabled(false);
 
         YAxis leftAxis = lineChart.getAxisLeft();
@@ -150,6 +131,7 @@ public class MainActivity extends AppCompatActivity {
         // lineChart.getXAxis().mAxisMinimum = 0;
         lineChart.getXAxis().setAxisMinimum(0);
         lineChart.getXAxis().setAxisMaximum(250);
+        lineChart.getXAxis().setAxisMaximum(gears.get(4).getrRpmSpeeds().get(8000).floatValue() + 10);
 
         // lineChart.getXAxis().mAxisMaximum = 200;
 
@@ -186,11 +168,10 @@ public class MainActivity extends AppCompatActivity {
         tire.setAspectRatio(50);
         tire.setDiameter(17);
 
+        ArrayList<Double> progressivePointRPM = new ArrayList<>();
+        ArrayList<Double> progressivePointSpeed = new ArrayList<>();
+
         double tireCircumference = tire.getCircumference();
-
-        // System.out.println(tireCircumference);
-
-        List<Gear> gears = new ArrayList<Gear>();
 
         double[] ratio = { 2.976190476, 2.105263158, 1.615508885, 1.277139208, 1.030927835 };
 
@@ -209,12 +190,7 @@ public class MainActivity extends AppCompatActivity {
         tuning.calculateSpeed(7000, finalDrive);
         tuning.calculateSpeeds(finalDrive);
 
-        gears = tuning.getGears();
-
-        // for (int i = 0; i < gears.size(); i++) {
-        // // barEntries.add(new BarEntry(i, (float) gears.get(i).getSpeed()));
-        // lineEntries.add(new Entry(i, (float) gears.get(i).getSpeed()));
-        // }
+        this.gears = tuning.getGears();
 
         for (int i = 0; i < gears.size(); i++) {
             if (i != 4) {
@@ -230,24 +206,63 @@ public class MainActivity extends AppCompatActivity {
                 progressivePointRPM.add(rpm);
                 progressivePointSpeed.add(last);
             }
-
-            // System.out.println(gears.get(i).getSpeed());
         }
-
-        constructData(gears);
-
-        // for (Gear g : gears) {
-        // System.out.print(g.getRatio() + ": ");
-        // for (Double d : g.getSpeeds()) {
-        // System.out.print(d + " ");
-        // }
-        // System.out.println();
-        // // System.out.print(g.getSpeeds());
-        // }
-
+        constructData(gears, progressivePointRPM, progressivePointSpeed);
     }
 
-    public void constructData(List<Gear> gears) {
+    public void calculateGear1() {
+        Tire tire = new Tire();
+        Gear gear = new Gear();
+        Tuning tuning = new Tuning();
+
+        tire.setWidth(185);
+        tire.setAspectRatio(50);
+        tire.setDiameter(17);
+
+        ArrayList<Double> progressivePointRPM = new ArrayList<>();
+        ArrayList<Double> progressivePointSpeed = new ArrayList<>();
+
+        double tireCircumference = tire.getCircumference();
+
+        double[] ratio = { 2.976190476, 2.105263158, 1.615508885, 1.277139208, 1.030927835 };
+
+        for (int i = 0; i < ratio.length; i++) {
+            gear = new Gear();
+            gear.setRatio(ratio[i]);
+            gears.add(gear);
+        }
+
+        double finalDrive = 5;
+
+        tuning.setGears(gears);
+
+        tuning.setTire(tire);
+
+        tuning.calculateSpeed(7000, finalDrive);
+        tuning.calculateSpeeds(finalDrive);
+
+        this.gears = tuning.getGears();
+
+        for (int i = 0; i < gears.size(); i++) {
+            if (i != 4) {
+                List<Double> speed = gears.get(i).getSpeeds();
+
+                // get last element of array
+                double last = speed.get(speed.size() - 1);
+
+                double rpm = calculateRPM(last, gears.get(i + 1).getRatio(), tireCircumference, finalDrive);
+
+                System.out.println(last);
+                System.out.println(rpm);
+                progressivePointRPM.add(rpm);
+                progressivePointSpeed.add(last);
+            }
+        }
+
+        constructData(gears, progressivePointRPM, progressivePointSpeed);
+    }
+
+    public void constructData(List<Gear> gears, ArrayList<Double> progressivePointRPM, ArrayList<Double> progressivePointSpeed) {
 
         HashMap<Integer, Double> rpmSpeed1 = gears.get(0).getrRpmSpeeds();
         HashMap<Integer, Double> rpmSpeed5 = gears.get(4).getrRpmSpeeds();
