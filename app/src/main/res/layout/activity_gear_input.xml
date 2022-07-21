@@ -20,14 +20,11 @@
             android:layout_height="wrap_content"
             android:text="Tire Width" />
 
-        <EditText
-            android:id="@+id/tireWidthInput"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="numberDecimal"
-            android:minHeight="48dp"
-            android:textColor="@color/black" />
+        <Spinner
+            android:id="@+id/spinnerTireWidth"
+            android:layout_width="212dp"
+            android:textColor="@color/black"
+            android:layout_height="wrap_content" />
 
         <TextView
             android:id="@+id/tireAspectRatioText"
@@ -35,14 +32,11 @@
             android:layout_height="wrap_content"
             android:text="Tire Aspect Ratio" />
 
-        <EditText
-            android:id="@+id/tireAspectRatioInput"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="numberDecimal"
-            android:minHeight="48dp"
-            android:textColor="@color/black" />
+        <Spinner
+            android:id="@+id/spinnerTireAspectRatio"
+            android:layout_width="212dp"
+            android:textColor="@color/black"
+            android:layout_height="wrap_content" />
 
         <TextView
             android:id="@+id/tireDiameterText"
@@ -50,15 +44,12 @@
             android:layout_height="wrap_content"
             android:text="Tire Diameter" />
 
-        <EditText
-            android:id="@+id/tireDiameterInput"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="numberDecimal"
-            android:minHeight="48dp"
-            android:textColor="@color/black" />
-
+        <Spinner
+            android:id="@+id/spinnerTireDiameter"
+            android:layout_width="212dp"
+            android:textColor="@color/black"
+            android:layout_height="wrap_content" />
+            
         <Button
             android:id="@+id/btnGenerateGraph"
             android:layout_width="wrap_content"

@@ -38,10 +38,8 @@ public class GearInputActivity extends AppCompatActivity {
         TextView tireDiameterLabel = (TextView) findViewById(R.id.tireDiameterText);
         tireDiameterLabel.setTextColor(Color.BLACK);
 
-        // ArrayList<Integer> tireWidthList = []
         int[] tireWidthData = { 145, 155, 160, 165, 175, 180, 185, 195, 205, 215, 225, 235, 245 };
         int[] tireAspectRatioData = { 60, 65, 70, 75 };
-        // int[] tireDiameterData = {}
 
         ArrayList<Integer> tireWidthList = new ArrayList<>();
         ArrayList<Integer> tireAspectRatioList = new ArrayList<>();
@@ -60,37 +58,77 @@ public class GearInputActivity extends AppCompatActivity {
         }
 
         ArrayList<String> list = new ArrayList<String>(); // make this as field atribute
-        list.add("A");
-        list.add("B");
-        list.add("C");
-        Spinner s = (Spinner) findViewById(R.id.spinnerTireWidth);
-        s.setBackgroundColor(Color.BLACK);
-        // ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-        // android.R.layout.simple_spinner_item, list);
-        ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item,
+
+        Spinner spinnerWidth = (Spinner) findViewById(R.id.spinnerTireWidth);
+        spinnerWidth.setBackgroundColor(Color.BLACK);
+
+        Spinner spinnerAspectRatio = (Spinner) findViewById(R.id.spinnerTireAspectRatio);
+        spinnerAspectRatio.setBackgroundColor(Color.BLACK);
+
+        Spinner spinnerDiameter = (Spinner) findViewById(R.id.spinnerTireDiameter);
+        spinnerDiameter.setBackgroundColor(Color.BLACK);
+
+        ArrayAdapter<Integer> adapterWidth = new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item,
                 tireWidthList);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapterWidth.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerWidth.setAdapter(adapterWidth);
 
-        s.setAdapter(adapter);
+        ArrayAdapter<Integer> adapterAspectRatio = new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item,
+                tireAspectRatioList);
+        adapterAspectRatio.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerAspectRatio.setAdapter(adapterAspectRatio);
 
-        final int[] tireWidth = {0};
+        ArrayAdapter<Integer> adapterDiameter = new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item,
+                tireDiameterList);
+        adapterDiameter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerDiameter.setAdapter(adapterDiameter);
 
-        s.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        final int[] tireWidth = { 0 };
+        final int[] tireAspectRatio = { 0 };
+        final int[] tireDiameter = { 0 };
+
+        spinnerWidth.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             int item;
 
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long arg3) {
-//                String item = list.get(position).toString();
+                // String item = list.get(position).toString();
                 item = tireWidthList.get(position).intValue();
                 // String item = parent.getItemAtPosition(position).toString();
                 tireWidth[0] = item;
                 System.out.println(tireWidth[0]);
 
-//                tireWidth[0] = item;
+                // tireWidth[0] = item;
 
                 // Showing selected spinner item
                 // Toast.makeText(context, "Selected: " + item, Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+
+            }
+        });
+
+        spinnerAspectRatio.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long arg3) {
+                tireAspectRatio[0] = tireAspectRatioList.get(position).intValue();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+
+            }
+        });
+
+        spinnerDiameter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long arg3) {
+                tireDiameter[0] = tireDiameterList.get(position).intValue();
             }
 
             @Override
@@ -103,17 +141,17 @@ public class GearInputActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                generateGraph(tireWidth[0]);
+                generateGraph(tireWidth[0], tireAspectRatio[0], tireDiameter[0]);
             }
         });
 
     }
 
-    public void generateGraph(int width) {
+    public void generateGraph(int width, int aspectRatio, int diameter) {
         Intent intent = new Intent(this, GeneratedGraphViewer.class);
         intent.putExtra("width", width);
-        intent.putExtra("aspectRatio", 50);
-        intent.putExtra("diameter", 17);
+        intent.putExtra("aspectRatio", aspectRatio);
+        intent.putExtra("diameter", diameter);
         startActivity(intent);
     }
 }
