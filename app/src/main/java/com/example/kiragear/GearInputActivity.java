@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -128,21 +129,59 @@ public class GearInputActivity extends AppCompatActivity {
             }
         });
 
+        // // Text Input Fields
+        // EditText gear1 = findViewById(R.id.gearOneRatioInput);
+        // double gearOneRatio = Double.parseDouble(gear1.getText().toString());
+
+        // System.out.println(gearOneRatio);
+
         button = (Button) findViewById(R.id.btnGenerateGraph);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                generateGraph(tireWidth[0], tireAspectRatio[0], tireDiameter[0]);
+                EditText gear1 = findViewById(R.id.gearOneRatioInput);
+                double gearOneRatio = Double.parseDouble(gear1.getText().toString());
+                ArrayList<Double> gearRatios = new ArrayList<Double>();
+                gearRatios.add(gearOneRatio);
+                EditText gear2 = findViewById(R.id.gearTwoRatioInput);
+                gearRatios.add(Double.parseDouble(gear2.getText().toString()));
+                EditText gear3 = findViewById(R.id.gearThreeRatioInput);
+                gearRatios.add(Double.parseDouble(gear3.getText().toString()));
+                EditText gear4 = findViewById(R.id.gearFourRatioInput);
+                gearRatios.add(Double.parseDouble(gear4.getText().toString()));
+                EditText gear5 = findViewById(R.id.gearFiveRatioInput);
+                gearRatios.add(Double.parseDouble(gear5.getText().toString()));
+
+                ArrayList<Double> finalDrives = new ArrayList<Double>();
+                EditText finalDrive1 = findViewById(R.id.finalDriveTuning1Input);
+                finalDrives.add(Double.parseDouble(finalDrive1.getText().toString()));
+                EditText finalDrive2 = findViewById(R.id.finalDriveTuning2Input);
+                finalDrives.add(Double.parseDouble(finalDrive2.getText().toString()));
+
+                generateGraph(tireWidth[0], tireAspectRatio[0], tireDiameter[0], gearRatios, finalDrives);
             }
         });
 
     }
 
-    public void generateGraph(int width, int aspectRatio, int diameter) {
+    public void generateGraph(int width, int aspectRatio, int diameter, ArrayList<Double> gearRatios,
+            ArrayList<Double> finalDrives) {
         Intent intent = new Intent(this, GeneratedGraphViewer.class);
         intent.putExtra("width", width);
         intent.putExtra("aspectRatio", aspectRatio);
         intent.putExtra("diameter", diameter);
+
+        // intent.putExtra("gearRatio", gearRatios);
+
+        intent.putExtra("gearOne", gearRatios.get(0));
+        intent.putExtra("gearTwo", gearRatios.get(1));
+        intent.putExtra("gearThree", gearRatios.get(2));
+        intent.putExtra("gearFour", gearRatios.get(3));
+        intent.putExtra("gearFive", gearRatios.get(4));
+
+        intent.putExtra("finalDriveOne", finalDrives.get(0));
+        intent.putExtra("finalDriveTwo", finalDrives.get(1));
+
         startActivity(intent);
     }
 }
