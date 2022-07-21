@@ -93,16 +93,7 @@ public class GearInputActivity extends AppCompatActivity {
 
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long arg3) {
-                // String item = list.get(position).toString();
-                item = tireWidthList.get(position).intValue();
-                // String item = parent.getItemAtPosition(position).toString();
-                tireWidth[0] = item;
-                System.out.println(tireWidth[0]);
-
-                // tireWidth[0] = item;
-
-                // Showing selected spinner item
-                // Toast.makeText(context, "Selected: " + item, Toast.LENGTH_LONG).show();
+                tireWidth[0] = tireWidthList.get(position).intValue();
             }
 
             @Override
