@@ -4,11 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.DashPathEffect;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -35,22 +39,23 @@ public class GeneratedGraphViewer extends AppCompatActivity {
 
     Tire tire = new Tire();
 
+    float highestX = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getSupportActionBar().hide();
+
         setContentView(R.layout.activity_generated_graph_viewer);
 
-        Intent intent = new Intent();
-//        tire = (Tire) intent.getParcelableExtra("tire");
         Bundle extras = getIntent().getExtras();
-
-//        tire = extras.getParcelable("tire");
-
         tire.setWidth(extras.getInt("width"));
         tire.setAspectRatio(extras.getInt("aspectRatio"));
         tire.setDiameter(extras.getInt("diameter"));
-
-//        tire.setWidth(getIntent().getParcelableExtra("tire"));
 
         lineChart = findViewById(R.id.line_chart);
 
@@ -58,43 +63,53 @@ public class GeneratedGraphViewer extends AppCompatActivity {
 
         lineChart.setScaleEnabled(false);
 
-        LineDataSet progressivelineDataSet = new LineDataSet(progressiveLineEntries, "Progressive Line");
-        progressivelineDataSet.enableDashedLine(5, 10, 0);
-        progressivelineDataSet.setLineWidth(2f);
-        progressivelineDataSet.setColor(Color.BLUE);
-        progressivelineDataSet.setDrawValues(false);
-        progressivelineDataSet.setDrawCircles(false);
+        LineDataSet progressiveLineDataSet = new LineDataSet(progressiveLineEntries, "Progressive Line Tuning 1");
+        progressiveLineDataSet.enableDashedLine(5, 10, 0);
+        progressiveLineDataSet.setLineWidth(2f);
+        progressiveLineDataSet.setColor(Color.BLUE);
+        progressiveLineDataSet.setDrawValues(false);
+        progressiveLineDataSet.setDrawCircles(false);
+        progressiveLineDataSet.setFormLineWidth(1f);
+        progressiveLineDataSet.setForm(Legend.LegendForm.LINE);
+        progressiveLineDataSet.setFormLineDashEffect(new DashPathEffect(new float[] { 10f, 5f }, 0f));
+        progressiveLineDataSet.setFormSize(15.f);
 
-        LineDataSet lineDataSet = new LineDataSet(lineEntries, "Line Data");
-        // lineDataSet.enableDashedLine(3, 20, 0);
+        LineDataSet lineDataSet = new LineDataSet(lineEntries, "Tuning 1");
         lineDataSet.setLineWidth(2f);
         lineDataSet.setColor(Color.BLUE);
         lineDataSet.setDrawValues(false);
         lineDataSet.setDrawCircles(false);
+        lineDataSet.setFormLineWidth(1f);
+        lineDataSet.setForm(Legend.LegendForm.LINE);
 
-        LineDataSet progressivelineDataSet1 = new LineDataSet(progressiveLineEntries1, "Progressive Line 1");
-        progressivelineDataSet1.enableDashedLine(5, 10, 0);
-        progressivelineDataSet1.setLineWidth(2f);
-        progressivelineDataSet1.setColor(Color.RED);
-        progressivelineDataSet1.setDrawValues(false);
-        progressivelineDataSet1.setDrawCircles(false);
+        LineDataSet progressiveLineDataSet1 = new LineDataSet(progressiveLineEntries1, "Progressive Line Tuning 2");
+        progressiveLineDataSet1.enableDashedLine(5, 10, 0);
+        progressiveLineDataSet1.setLineWidth(2f);
+        progressiveLineDataSet1.setColor(Color.RED);
+        progressiveLineDataSet1.setDrawValues(false);
+        progressiveLineDataSet1.setDrawCircles(false);
+        progressiveLineDataSet1.setFormLineWidth(1f);
+        progressiveLineDataSet1.setForm(Legend.LegendForm.LINE);
+        progressiveLineDataSet1.setFormLineDashEffect(new DashPathEffect(new float[] { 10f, 5f }, 0f));
+        progressiveLineDataSet1.setFormSize(15.f);
 
-        LineDataSet lineDataSet1 = new LineDataSet(lineEntries1, "Line Data 2");
+        LineDataSet lineDataSet1 = new LineDataSet(lineEntries1, "Tuning 2");
         lineDataSet1.setLineWidth(2f);
         lineDataSet1.setColors(Color.RED);
         lineDataSet1.setDrawValues(false);
         lineDataSet1.setDrawCircles(false);
+        lineDataSet1.setFormLineWidth(1f);
+        lineDataSet1.setForm(Legend.LegendForm.LINE);
 
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
         dataSets.add(lineDataSet);
         dataSets.add(lineDataSet1);
-        dataSets.add(progressivelineDataSet);
-        dataSets.add(progressivelineDataSet1);
+        dataSets.add(progressiveLineDataSet);
+        dataSets.add(progressiveLineDataSet1);
 
-        // lineChart.setData(new LineData(lineDataSet));
         lineChart.setData(new LineData(dataSets));
 
-        lineChart.getDescription().setText("Line Chart");
+        lineChart.getDescription().setText("");
         lineChart.getDescription().setTextColor(Color.BLACK);
         lineChart.getAxisLeft().setTextColor(Color.BLACK);
         lineChart.getXAxis().setTextColor(Color.BLACK);
@@ -102,12 +117,21 @@ public class GeneratedGraphViewer extends AppCompatActivity {
 
         lineChart.getAxisRight().setEnabled(false);
 
+        lineChart.fitScreen();
+
         YAxis leftAxis = lineChart.getAxisLeft();
         leftAxis.setAxisMinimum(0);
 
-//        lineChart.getXAxis().setLabelCount(5, /* force: */true);
         lineChart.getXAxis().setAxisMinimum(0);
-        lineChart.getXAxis().setAxisMaximum(250);
+        lineChart.getXAxis().setAxisMaximum(highestX + 20);
+
+        // Legend
+        Legend legend = lineChart.getLegend();
+        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
+        // legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        legend.setWordWrapEnabled(true);
+        // legend.setDrawInside(false);
     }
 
     public void generateGraph() {
@@ -121,7 +145,6 @@ public class GeneratedGraphViewer extends AppCompatActivity {
     }
 
     public void calculateGear() {
-        Gear gear = new Gear();
         Tuning tuning = new Tuning();
 
         ArrayList<Double> progressivePointRPM = new ArrayList<>();
@@ -134,7 +157,7 @@ public class GeneratedGraphViewer extends AppCompatActivity {
         List<Gear> gears = new ArrayList<Gear>();
 
         for (int i = 0; i < ratio.length; i++) {
-            gear = new Gear();
+            Gear gear = new Gear();
             gear.setRatio(ratio[i]);
             gears.add(gear);
         }
@@ -220,7 +243,8 @@ public class GeneratedGraphViewer extends AppCompatActivity {
         progressiveLineEntries1 = constructProgressiveLine(progressivePointRPM, progressivePointSpeed);
     }
 
-    public ArrayList<Entry> constructProgressiveLine(ArrayList<Double> progressivePointRPM, ArrayList<Double> progressivePointSpeed) {
+    public ArrayList<Entry> constructProgressiveLine(ArrayList<Double> progressivePointRPM,
+            ArrayList<Double> progressivePointSpeed) {
         ArrayList<Entry> progressiveLineEntries = new ArrayList<Entry>();
 
         progressiveLineEntries
@@ -240,7 +264,7 @@ public class GeneratedGraphViewer extends AppCompatActivity {
     }
 
     public ArrayList<Entry> constructData(List<Gear> gears, ArrayList<Double> progressivePointRPM,
-                                      ArrayList<Double> progressivePointSpeed) {
+            ArrayList<Double> progressivePointSpeed) {
 
         ArrayList<Entry> lineEntries = new ArrayList<Entry>();
 
@@ -259,6 +283,9 @@ public class GeneratedGraphViewer extends AppCompatActivity {
         lineEntries.add(new Entry(progressivePointSpeed.get(3).floatValue(), progressivePointRPM.get(3).floatValue()));
         lineEntries.add(new Entry(rpmSpeed5.get(8000).floatValue(), 8000f));
 
+        if (rpmSpeed5.get(8000).floatValue() > highestX) {
+            highestX = rpmSpeed5.get(8000).floatValue();
+        }
 
         return lineEntries;
     }
