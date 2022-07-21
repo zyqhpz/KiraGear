@@ -41,6 +41,11 @@ public class GeneratedGraphViewer extends AppCompatActivity {
 
     float highestX = 0;
 
+    double[] ratio = new double[5];
+
+    double finalDriveOne;
+    double finalDriveTwo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +61,25 @@ public class GeneratedGraphViewer extends AppCompatActivity {
         tire.setWidth(extras.getInt("width"));
         tire.setAspectRatio(extras.getInt("aspectRatio"));
         tire.setDiameter(extras.getInt("diameter"));
+
+        // ratio = extras.getDoubleArray("gearRatios");
+
+        double ratio1 = extras.getDouble("gearOne");
+        double ratio2 = extras.getDouble("gearTwo");
+        double ratio3 = extras.getDouble("gearThree");
+        double ratio4 = extras.getDouble("gearFour");
+        double ratio5 = extras.getDouble("gearFive");
+
+        // insert all ratio values into an array
+        ratio[0] = ratio1;
+        ratio[1] = ratio2;
+        ratio[2] = ratio3;
+        ratio[3] = ratio4;
+        ratio[4] = ratio5;
+
+        // get the final drive values
+        finalDriveOne = extras.getDouble("finalDriveOne");
+        finalDriveTwo = extras.getDouble("finalDriveTwo");
 
         lineChart = findViewById(R.id.line_chart);
 
@@ -152,7 +176,7 @@ public class GeneratedGraphViewer extends AppCompatActivity {
 
         double tireCircumference = tire.getCircumference();
 
-        double[] ratio = { 2.976190476, 2.105263158, 1.615508885, 1.277139208, 1.030927835 };
+        // ratio = { 2.976190476, 2.105263158, 1.615508885, 1.277139208, 1.030927835 };
 
         List<Gear> gears = new ArrayList<Gear>();
 
@@ -162,7 +186,8 @@ public class GeneratedGraphViewer extends AppCompatActivity {
             gears.add(gear);
         }
 
-        double finalDrive = 4.0816;
+        // double finalDrive = 4.0816;
+        double finalDrive = finalDriveOne;
 
         tuning.setGears(gears);
 
@@ -204,7 +229,8 @@ public class GeneratedGraphViewer extends AppCompatActivity {
 
         double tireCircumference = tire.getCircumference();
 
-        double[] ratio = { 2.976190476, 2.105263158, 1.615508885, 1.277139208, 1.030927835 };
+        // double[] ratio = { 2.976190476, 2.105263158, 1.615508885, 1.277139208,
+        // 1.030927835 };
 
         List<Gear> gears = new ArrayList<Gear>();
 
@@ -214,7 +240,8 @@ public class GeneratedGraphViewer extends AppCompatActivity {
             gears.add(gear);
         }
 
-        double finalDrive = 5.0;
+        // double finalDrive = 5.0;
+        double finalDrive = finalDriveTwo;
 
         tuning.setGears(gears);
 
