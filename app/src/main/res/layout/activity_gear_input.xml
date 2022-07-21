@@ -4,6 +4,67 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".GearInputActivity">
+
+    <LinearLayout
+        android:layout_width="404dp"
+        android:layout_height="267dp"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="94dp">
+
+        <TextView
+            android:id="@+id/tireWidthText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tire Width" />
+
+        <EditText
+            android:id="@+id/tireWidthInput"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="numberDecimal"
+            android:minHeight="48dp"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/tireAspectRatioText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tire Aspect Ratio" />
+
+        <EditText
+            android:id="@+id/tireAspectRatioInput"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="numberDecimal"
+            android:minHeight="48dp"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/tireDiameterText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tire Diameter" />
+
+        <EditText
+            android:id="@+id/tireDiameterInput"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="numberDecimal"
+            android:minHeight="48dp"
+            android:textColor="@color/black" />
+
+        <Button
+            android:id="@+id/btnGenerateGraph"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Generate Graph" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
