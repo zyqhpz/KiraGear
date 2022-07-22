@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -13,13 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
-
-import model.Tire;
 
 public class GearInputActivity extends AppCompatActivity {
 
@@ -57,8 +50,6 @@ public class GearInputActivity extends AppCompatActivity {
         for (int i = 12; i < 25; i++) {
             tireDiameterList.add(i);
         }
-
-        ArrayList<String> list = new ArrayList<String>(); // make this as field atribute
 
         Spinner spinnerWidth = (Spinner) findViewById(R.id.spinnerTireWidth);
         spinnerWidth.setBackgroundColor(Color.BLACK);
@@ -129,12 +120,6 @@ public class GearInputActivity extends AppCompatActivity {
             }
         });
 
-        // // Text Input Fields
-        // EditText gear1 = findViewById(R.id.gearOneRatioInput);
-        // double gearOneRatio = Double.parseDouble(gear1.getText().toString());
-
-        // System.out.println(gearOneRatio);
-
         button = (Button) findViewById(R.id.btnGenerateGraph);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -170,8 +155,6 @@ public class GearInputActivity extends AppCompatActivity {
         intent.putExtra("width", width);
         intent.putExtra("aspectRatio", aspectRatio);
         intent.putExtra("diameter", diameter);
-
-        // intent.putExtra("gearRatio", gearRatios);
 
         intent.putExtra("gearOne", gearRatios.get(0));
         intent.putExtra("gearTwo", gearRatios.get(1));

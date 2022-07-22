@@ -43,7 +43,7 @@
             android:id="@+id/tireDiameterText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Tire Diameter" />
+            android:text="Tire Diameter (inch)" />
 
         <Spinner
             android:id="@+id/spinnerTireDiameter"

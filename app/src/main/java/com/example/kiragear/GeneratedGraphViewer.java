@@ -2,14 +2,11 @@ package com.example.kiragear;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.os.Bundle;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
@@ -163,11 +160,6 @@ public class GeneratedGraphViewer extends AppCompatActivity {
         calculateGear1();
     }
 
-    public void openNextPage() {
-        Intent intent = new Intent(this, GearInputActivity.class);
-        startActivity(intent);
-    }
-
     public void calculateGear() {
         Tuning tuning = new Tuning();
 
@@ -175,8 +167,6 @@ public class GeneratedGraphViewer extends AppCompatActivity {
         ArrayList<Double> progressivePointSpeed = new ArrayList<>();
 
         double tireCircumference = tire.getCircumference();
-
-        // ratio = { 2.976190476, 2.105263158, 1.615508885, 1.277139208, 1.030927835 };
 
         List<Gear> gears = new ArrayList<Gear>();
 
@@ -216,21 +206,13 @@ public class GeneratedGraphViewer extends AppCompatActivity {
     }
 
     public void calculateGear1() {
-        Tire tire = new Tire();
         Gear gear = new Gear();
         Tuning tuning = new Tuning();
-
-        tire.setWidth(185);
-        tire.setAspectRatio(50);
-        tire.setDiameter(17);
 
         ArrayList<Double> progressivePointRPM = new ArrayList<>();
         ArrayList<Double> progressivePointSpeed = new ArrayList<>();
 
         double tireCircumference = tire.getCircumference();
-
-        // double[] ratio = { 2.976190476, 2.105263158, 1.615508885, 1.277139208,
-        // 1.030927835 };
 
         List<Gear> gears = new ArrayList<Gear>();
 
@@ -240,7 +222,6 @@ public class GeneratedGraphViewer extends AppCompatActivity {
             gears.add(gear);
         }
 
-        // double finalDrive = 5.0;
         double finalDrive = finalDriveTwo;
 
         tuning.setGears(gears);
@@ -264,9 +245,7 @@ public class GeneratedGraphViewer extends AppCompatActivity {
                 progressivePointSpeed.add(last);
             }
         }
-
         lineEntries1 = constructData(gears, progressivePointRPM, progressivePointSpeed);
-
         progressiveLineEntries1 = constructProgressiveLine(progressivePointRPM, progressivePointSpeed);
     }
 

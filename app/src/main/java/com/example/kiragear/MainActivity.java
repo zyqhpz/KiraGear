@@ -1,437 +1,235 @@
 package com.example.kiragear;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
-
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.IMarker;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.github.mikephil.charting.utils.ColorTemplate;
-
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import model.Tire;
-import model.Tuning;
-import model.Gear;
+import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
 
-    LineChart lineChart;
-    ArrayList<Entry> lineEntries = new ArrayList<Entry>();
-    ArrayList<Entry> progressiveLineEntries = new ArrayList<Entry>();
-
-    ArrayList<Entry> lineEntries1 = new ArrayList<Entry>();
-    ArrayList<Entry> progressiveLineEntries1 = new ArrayList<Entry>();
-
     private Button button;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_gear_input);
 
+        TextView tireWidthLabel = (TextView) findViewById(R.id.tireWidthText);
+        tireWidthLabel.setTextColor(Color.BLACK);
 
+        TextView tireAspectRatioLabel = (TextView) findViewById(R.id.tireAspectRatioText);
+        tireAspectRatioLabel.setTextColor(Color.BLACK);
 
-        // ActivityMainBinding binding =
-        // ActivityMainBinding.inflate(getLayoutInflater());
-        // View view = binding.getRoot();
-        // setContentView(view);
+        TextView tireDiameterLabel = (TextView) findViewById(R.id.tireDiameterText);
+        tireDiameterLabel.setTextColor(Color.BLACK);
 
-        // LinearLayout li = findViewById(R.id.main_layout);
+        int[] tireWidthData = { 145, 155, 160, 165, 175, 180, 185, 195, 205, 215, 225, 235, 245 };
+        int[] tireAspectRatioData = { 35, 40, 45, 50, 55, 60, 65, 70, 75 };
 
-        // setBackgroundColor()
-        // li.setBackgroundColor(Color.parseColor("#rrggbb"));
+        ArrayList<Integer> tireWidthList = new ArrayList<>();
+        ArrayList<Integer> tireAspectRatioList = new ArrayList<>();
+        ArrayList<Integer> tireDiameterList = new ArrayList<>();
 
-        // yourView.setBackgroundColor(Color.TRANSPARENT);
+        for (int i = 0; i < tireWidthData.length; i++) {
+            tireWidthList.add(tireWidthData[i]);
+        }
 
-        // li.setBackgroundColor(Color.YELLOW);
-        //
-        // Color mColor = new Color();
-        // mColor.red(225);
-        // mColor.green(11);
-        // mColor.blue(11);
-        //// li.setBackgroundColor(mColor);
-        //
-        // li.setBackgroundColor(Color.parseColor("#ffffff"));
+        for (int i = 0; i < tireAspectRatioData.length; i++) {
+            tireAspectRatioList.add(tireAspectRatioData[i]);
+        }
 
-        // li.setBackgroundColor(Color.rgb(226, 11, 11));
+        for (int i = 12; i < 25; i++) {
+            tireDiameterList.add(i);
+        }
 
-        setContentView(R.layout.activity_main);
-        lineChart = findViewById(R.id.line_chart);
+        Spinner spinnerWidth = (Spinner) findViewById(R.id.spinnerTireWidth);
+        spinnerWidth.setBackgroundColor(Color.BLACK);
 
-        button = (Button) findViewById(R.id.buttonNext);
-        button.setOnClickListener(new View.OnClickListener() {
+        Spinner spinnerAspectRatio = (Spinner) findViewById(R.id.spinnerTireAspectRatio);
+        spinnerAspectRatio.setBackgroundColor(Color.BLACK);
+
+        Spinner spinnerDiameter = (Spinner) findViewById(R.id.spinnerTireDiameter);
+        spinnerDiameter.setBackgroundColor(Color.BLACK);
+
+        ArrayAdapter<Integer> adapterWidth = new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item,
+                tireWidthList);
+        adapterWidth.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerWidth.setAdapter(adapterWidth);
+
+        ArrayAdapter<Integer> adapterAspectRatio = new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item,
+                tireAspectRatioList);
+        adapterAspectRatio.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerAspectRatio.setAdapter(adapterAspectRatio);
+
+        ArrayAdapter<Integer> adapterDiameter = new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item,
+                tireDiameterList);
+        adapterDiameter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerDiameter.setAdapter(adapterDiameter);
+
+        final int[] tireWidth = { 0 };
+        final int[] tireAspectRatio = { 0 };
+        final int[] tireDiameter = { 0 };
+
+        spinnerWidth.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            int item;
+
             @Override
-            public void onClick(View view) {
-                openNextPage();
-//                Intent intent = new Intent(this, GearInputActivity.class);
-//                startActivity(intent);
+            public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long arg3) {
+                tireWidth[0] = tireWidthList.get(position).intValue();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+
             }
         });
 
-        generateGraph();
+        spinnerAspectRatio.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
-        // barChart = binding.barChart;
-        // pieChart = binding.pieChart;
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long arg3) {
+                tireAspectRatio[0] = tireAspectRatioList.get(position).intValue();
+            }
 
-        // barChart.setData(new float[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 });
-        // pieChart.setData(new float[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 });
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
 
-        // for (int i = 1; i < 11; i++) {
-        // // float value = (float) (Math.random() * 100);
-        // float value = (float) 100;
-        // barEntries.add(new BarEntry(i, value));
-        // lineEntries.add(new Entry(i, value));
+            }
+        });
+
+        spinnerDiameter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long arg3) {
+                tireDiameter[0] = tireDiameterList.get(position).intValue();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+
+            }
+        });
+
+        button = (Button) findViewById(R.id.btnGenerateGraph);
+        button.setEnabled(false);
+
+        EditText gear1 = findViewById(R.id.gearOneRatioInput);
+        EditText gear2 = findViewById(R.id.gearTwoRatioInput);
+        EditText gear3 = findViewById(R.id.gearThreeRatioInput);
+        EditText gear4 = findViewById(R.id.gearFourRatioInput);
+        EditText gear5 = findViewById(R.id.gearFiveRatioInput);
+
+        EditText finalDrive1 = findViewById(R.id.finalDriveTuning1Input);
+        EditText finalDrive2 = findViewById(R.id.finalDriveTuning2Input);
+
+        ArrayList<EditText> gearsInput = new ArrayList<EditText>(Arrays.asList(gear1, gear2, gear3, gear4, gear5));
+
+        for (EditText gearInput : gearsInput) {
+            gearInput.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                    CharSequence s1 = gear1.getText().toString().trim();
+                    CharSequence s2 = gear2.getText().toString().trim();
+                    CharSequence s3 = gear3.getText().toString().trim();
+                    CharSequence s4 = gear4.getText().toString().trim();
+                    CharSequence s5 = gear5.getText().toString().trim();
+
+                    if (s1.length() > 0 && s2.length() > 0 && s3.length() > 0 && s4.length() > 0 && s5.length() > 0) {
+                        button.setEnabled(true);
+                    } else {
+                        button.setEnabled(false);
+                    }
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+        }
+
+        // gear1.addTextChangedListener(new TextWatcher() {
+        //
+        // @Override
+        // public void onTextChanged(CharSequence s, int start, int before, int count) {
+        //
+        // if (s.toString().trim().length() == 0) {
+        // button.setEnabled(false);
+        // } else {
+        // button.setEnabled(true);
         // }
-
-        // lineEntries.add(new Entry(0, 0));
-        // lineEntries.add(new Entry(38, 4000));
-        // lineEntries.add(new Entry(48, 5000));
-        // lineEntries.add(new Entry(57, 6000));
-        // lineEntries.add(new Entry(67, 7000));
-        // lineEntries.add(new Entry(77, 8000));
-
-        lineChart.setScaleEnabled(false);
-
-        LineDataSet progressivelineDataSet = new LineDataSet(progressiveLineEntries, "Progressive Line");
-        progressivelineDataSet.enableDashedLine(5, 10, 0);
-        progressivelineDataSet.setLineWidth(2f);
-        progressivelineDataSet.setColor(Color.BLUE);
-        progressivelineDataSet.setDrawValues(false);
-        progressivelineDataSet.setDrawCircles(false);
-
-        LineDataSet lineDataSet = new LineDataSet(lineEntries, "Line Data");
-        // lineDataSet.enableDashedLine(3, 20, 0);
-        lineDataSet.setLineWidth(2f);
-        lineDataSet.setColor(Color.BLUE);
-        lineDataSet.setDrawValues(false);
-        lineDataSet.setDrawCircles(false);
-
-        LineDataSet progressivelineDataSet1 = new LineDataSet(progressiveLineEntries1, "Progressive Line 1");
-        progressivelineDataSet1.enableDashedLine(5, 10, 0);
-        progressivelineDataSet1.setLineWidth(2f);
-        progressivelineDataSet1.setColor(Color.RED);
-        progressivelineDataSet1.setDrawValues(false);
-        progressivelineDataSet1.setDrawCircles(false);
-
-        LineDataSet lineDataSet1 = new LineDataSet(lineEntries1, "Line Data 2");
-        lineDataSet1.setLineWidth(2f);
-        lineDataSet1.setColors(Color.RED);
-        lineDataSet1.setDrawValues(false);
-        lineDataSet1.setDrawCircles(false);
-
-        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-        dataSets.add(lineDataSet);
-        dataSets.add(lineDataSet1);
-        dataSets.add(progressivelineDataSet);
-        dataSets.add(progressivelineDataSet1);
-
-        // lineChart.setData(new LineData(lineDataSet));
-        lineChart.setData(new LineData(dataSets));
-
-        lineChart.getDescription().setText("Line Chart");
-        lineChart.getDescription().setTextColor(Color.BLACK);
-        lineChart.getAxisLeft().setTextColor(Color.BLACK);
-        lineChart.getXAxis().setTextColor(Color.BLACK);
-        lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
-
-        // lineChart.getXAxis().setDrawGridLines(false);
-
-        lineChart.getAxisRight().setEnabled(false);
-
-//        lineChart.setDrawCircle();
-
-        YAxis leftAxis = lineChart.getAxisLeft();
-        leftAxis.setAxisMinimum(0);
-
-        // LimitLine ll = new LimitLine(140f, "Critical Blood Pressure");
-        // ll.setLineColor(Color.RED);
-        // ll.setLineWidth(4f);
-        // ll.setTextColor(Color.BLACK);
-        // ll.setTextSize(12f);
-        // // .. and more styling options
+        // }
         //
-        // leftAxis.addLimitLine(ll);
-
-        lineChart.getXAxis().setLabelCount(5, /* force: */true);
-        // lineChart.getXAxis().mAxisMinimum = 0;
-        lineChart.getXAxis().setAxisMinimum(0);
-        lineChart.getXAxis().setAxisMaximum(250);
-//        lineChart.getXAxis().setAxisMaximum(gears.get(4).getrRpmSpeeds().get(8000).floatValue() + 10);
-
-//        IMarker marker = new GraphMarkerView(this, R.layout.activity_main);
-//        lineChart.setMarker(marker);
-
-        // lineChart.getXAxis().mAxisMaximum = 200;
-
-        // ArrayList<String> xAxisLables = new ArrayList();
-        // xAxisLables.add("0");
-        // xAxisLables.add("25");
-        // xAxisLables.add("50");
-        // xAxisLables.add("75");
-        // xAxisLables.add("100");
-        // xAxisLables.add("125");
-        // // xAxisLables.add("150");
-        // // xAxisLables.add("175");
-        // // xAxisLables.add("200");
+        // @Override
+        // public void beforeTextChanged(CharSequence s, int start, int count,
+        // int after) {
+        // // TODO Auto-generated method stub
         //
-        // // XAxis xAxis = lineChart.getXAxis();
-        // // xAxis.setValueFormatter(new ValueFormatter() {
-        // // @Override
-        // // public String getFormattedValue(float value, AxisBase axis) {
-        // // return xAxisLabels.get((int) value);
-        // //
-        // // }
-        // // });
+        // }
         //
-        // lineChart.getXAxis().setValueFormatter(new
-        // IndexAxisValueFormatter(xAxisLables));
+        // @Override
+        // public void afterTextChanged(Editable s) {
+        // // TODO Auto-generated method stub
+        //
+        // }
+        // });
+
+        // button = (Button) findViewById(R.id.btnGenerateGraph);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ArrayList<Double> gearRatios = new ArrayList<Double>();
+                gearRatios.add(Double.parseDouble(gear1.getText().toString()));
+                gearRatios.add(Double.parseDouble(gear2.getText().toString()));
+                gearRatios.add(Double.parseDouble(gear3.getText().toString()));
+                gearRatios.add(Double.parseDouble(gear4.getText().toString()));
+                gearRatios.add(Double.parseDouble(gear5.getText().toString()));
+
+                ArrayList<Double> finalDrives = new ArrayList<Double>();
+                finalDrives.add(Double.parseDouble(finalDrive1.getText().toString()));
+                finalDrives.add(Double.parseDouble(finalDrive2.getText().toString()));
+
+                generateGraph(tireWidth[0], tireAspectRatio[0], tireDiameter[0], gearRatios, finalDrives);
+            }
+        });
+
     }
 
-    public void generateGraph() {
-        calculateGear();
-        calculateGear1();
-    }
+    public void generateGraph(int width, int aspectRatio, int diameter, ArrayList<Double> gearRatios,
+            ArrayList<Double> finalDrives) {
+        Intent intent = new Intent(this, GeneratedGraphViewer.class);
+        intent.putExtra("width", width);
+        intent.putExtra("aspectRatio", aspectRatio);
+        intent.putExtra("diameter", diameter);
 
-    public void openNextPage() {
-        Intent intent = new Intent(this, GearInputActivity.class);
+        intent.putExtra("gearOne", gearRatios.get(0));
+        intent.putExtra("gearTwo", gearRatios.get(1));
+        intent.putExtra("gearThree", gearRatios.get(2));
+        intent.putExtra("gearFour", gearRatios.get(3));
+        intent.putExtra("gearFive", gearRatios.get(4));
+
+        intent.putExtra("finalDriveOne", finalDrives.get(0));
+        intent.putExtra("finalDriveTwo", finalDrives.get(1));
+
         startActivity(intent);
-    }
-
-    public void calculateGear() {
-        Tire tire = new Tire();
-        Gear gear = new Gear();
-        Tuning tuning = new Tuning();
-
-        tire.setWidth(185);
-        tire.setAspectRatio(50);
-        tire.setDiameter(17);
-
-        ArrayList<Double> progressivePointRPM = new ArrayList<>();
-        ArrayList<Double> progressivePointSpeed = new ArrayList<>();
-
-        double tireCircumference = tire.getCircumference();
-
-        double[] ratio = { 2.976190476, 2.105263158, 1.615508885, 1.277139208, 1.030927835 };
-
-        List<Gear> gears = new ArrayList<Gear>();
-
-        for (int i = 0; i < ratio.length; i++) {
-            gear = new Gear();
-            gear.setRatio(ratio[i]);
-            gears.add(gear);
-        }
-
-        double finalDrive = 4.0816;
-
-        tuning.setGears(gears);
-
-        tuning.setTire(tire);
-
-        tuning.calculateSpeed(7000, finalDrive);
-        tuning.calculateSpeeds(finalDrive);
-
-        gears = tuning.getGears();
-
-        for (int i = 0; i < gears.size(); i++) {
-            if (i != 4) {
-                List<Double> speed = gears.get(i).getSpeeds();
-
-                // get last element of array
-                double last = speed.get(speed.size() - 1);
-
-                double rpm = calculateRPM(last, gears.get(i + 1).getRatio(), tireCircumference, finalDrive);
-
-                progressivePointRPM.add(rpm);
-                progressivePointSpeed.add(last);
-            }
-        }
-        lineEntries = constData(gears, progressivePointRPM, progressivePointSpeed);
-        progressiveLineEntries = constructProgressiveLine(progressivePointRPM, progressivePointSpeed);
-//         constructData(lineEntries, progressiveLineEntries, gears, progressivePointRPM, progressivePointSpeed);
-    }
-
-    public void calculateGear1() {
-        Tire tire = new Tire();
-        Gear gear = new Gear();
-        Tuning tuning = new Tuning();
-
-        tire.setWidth(185);
-        tire.setAspectRatio(50);
-        tire.setDiameter(17);
-
-        ArrayList<Double> progressivePointRPM = new ArrayList<>();
-        ArrayList<Double> progressivePointSpeed = new ArrayList<>();
-
-        double tireCircumference = tire.getCircumference();
-
-        double[] ratio = { 2.976190476, 2.105263158, 1.615508885, 1.277139208, 1.030927835 };
-
-        List<Gear> gears = new ArrayList<Gear>();
-
-        for (int i = 0; i < ratio.length; i++) {
-            gear = new Gear();
-            gear.setRatio(ratio[i]);
-            gears.add(gear);
-        }
-
-        double finalDrive = 5.0;
-
-        tuning.setGears(gears);
-
-        tuning.setTire(tire);
-
-        tuning.calculateSpeed(7000, finalDrive);
-        tuning.calculateSpeeds(finalDrive);
-
-        gears = tuning.getGears();
-
-        for (int i = 0; i < gears.size(); i++) {
-            if (i != 4) {
-                List<Double> speed = gears.get(i).getSpeeds();
-
-                // get last element of array
-                double last = speed.get(speed.size() - 1);
-
-                double rpm = calculateRPM(last, gears.get(i + 1).getRatio(), tireCircumference, finalDrive);
-                progressivePointRPM.add(rpm);
-                progressivePointSpeed.add(last);
-            }
-        }
-
-        lineEntries1 = constData(gears, progressivePointRPM, progressivePointSpeed);
-
-        progressiveLineEntries1 = constructProgressiveLine(progressivePointRPM, progressivePointSpeed);
-
-//         constructData(lineEntries1, progressiveLineEntries1, gears, progressivePointRPM, progressivePointSpeed);
-    }
-
-    public void constructData(ArrayList<Entry> lineEntries, ArrayList<Entry> progressiveLineEntries, List<Gear> gears,
-            ArrayList<Double> progressivePointRPM,
-            ArrayList<Double> progressivePointSpeed) {
-
-        HashMap<Integer, Double> rpmSpeed1 = gears.get(0).getrRpmSpeeds();
-        HashMap<Integer, Double> rpmSpeed5 = gears.get(4).getrRpmSpeeds();
-
-        lineEntries.add(new Entry(0f, 0f));
-        lineEntries.add(new Entry(rpmSpeed1.get(8000).floatValue(), 8000f));
-        lineEntries.add(new Entry(progressivePointSpeed.get(0).floatValue(), 8000f));
-        lineEntries.add(new Entry(progressivePointSpeed.get(0).floatValue(), progressivePointRPM.get(0).floatValue()));
-        lineEntries.add(new Entry(progressivePointSpeed.get(1).floatValue(), 8000f));
-        lineEntries.add(new Entry(progressivePointSpeed.get(1).floatValue(), progressivePointRPM.get(1).floatValue()));
-        lineEntries.add(new Entry(progressivePointSpeed.get(2).floatValue(), 8000f));
-        lineEntries.add(new Entry(progressivePointSpeed.get(2).floatValue(), progressivePointRPM.get(2).floatValue()));
-        lineEntries.add(new Entry(progressivePointSpeed.get(3).floatValue(), 8000f));
-        lineEntries.add(new Entry(progressivePointSpeed.get(3).floatValue(), progressivePointRPM.get(3).floatValue()));
-        lineEntries.add(new Entry(rpmSpeed5.get(8000).floatValue(), 8000f));
-
-        progressiveLineEntries
-                .add(new Entry(progressivePointSpeed.get(0).floatValue(), progressivePointRPM.get(0).floatValue()));
-        progressiveLineEntries
-                .add(new Entry(progressivePointSpeed.get(1).floatValue(), progressivePointRPM.get(1).floatValue()));
-        progressiveLineEntries
-                .add(new Entry(progressivePointSpeed.get(2).floatValue(), progressivePointRPM.get(2).floatValue()));
-        progressiveLineEntries
-                .add(new Entry(progressivePointSpeed.get(3).floatValue(), progressivePointRPM.get(3).floatValue()));
-    }
-
-    public void constructData1(ArrayList<Entry> progressiveLineEntries, List<Gear> gears,
-            ArrayList<Double> progressivePointRPM,
-            ArrayList<Double> progressivePointSpeed) {
-
-        HashMap<Integer, Double> rpmSpeed1 = gears.get(0).getrRpmSpeeds();
-        HashMap<Integer, Double> rpmSpeed5 = gears.get(4).getrRpmSpeeds();
-
-        lineEntries1.add(new Entry(0f, 0f));
-        lineEntries1.add(new Entry(rpmSpeed1.get(8000).floatValue(), 8000f));
-        lineEntries1.add(new Entry(progressivePointSpeed.get(0).floatValue(), 8000f));
-        lineEntries1.add(new Entry(progressivePointSpeed.get(0).floatValue(), progressivePointRPM.get(0).floatValue()));
-        lineEntries1.add(new Entry(progressivePointSpeed.get(1).floatValue(), 8000f));
-        lineEntries1.add(new Entry(progressivePointSpeed.get(1).floatValue(), progressivePointRPM.get(1).floatValue()));
-        lineEntries1.add(new Entry(progressivePointSpeed.get(2).floatValue(), 8000f));
-        lineEntries1.add(new Entry(progressivePointSpeed.get(2).floatValue(), progressivePointRPM.get(2).floatValue()));
-        lineEntries1.add(new Entry(progressivePointSpeed.get(3).floatValue(), 8000f));
-        lineEntries1.add(new Entry(progressivePointSpeed.get(3).floatValue(), progressivePointRPM.get(3).floatValue()));
-        lineEntries1.add(new Entry(rpmSpeed5.get(8000).floatValue(), 8000f));
-
-        progressiveLineEntries1
-                .add(new Entry(progressivePointSpeed.get(0).floatValue(), progressivePointRPM.get(0).floatValue()));
-        progressiveLineEntries
-                .add(new Entry(progressivePointSpeed.get(1).floatValue(), progressivePointRPM.get(1).floatValue()));
-        progressiveLineEntries1
-                .add(new Entry(progressivePointSpeed.get(2).floatValue(), progressivePointRPM.get(2).floatValue()));
-        progressiveLineEntries1
-                .add(new Entry(progressivePointSpeed.get(3).floatValue(), progressivePointRPM.get(3).floatValue()));
-    }
-
-    public ArrayList<Entry> constructProgressiveLine(ArrayList<Double> progressivePointRPM, ArrayList<Double> progressivePointSpeed) {
-        ArrayList<Entry> progressiveLineEntries = new ArrayList<Entry>();
-
-        progressiveLineEntries
-                .add(new Entry(progressivePointSpeed.get(0).floatValue(), progressivePointRPM.get(0).floatValue()));
-        progressiveLineEntries
-                .add(new Entry(progressivePointSpeed.get(1).floatValue(), progressivePointRPM.get(1).floatValue()));
-        progressiveLineEntries
-                .add(new Entry(progressivePointSpeed.get(2).floatValue(), progressivePointRPM.get(2).floatValue()));
-        progressiveLineEntries
-                .add(new Entry(progressivePointSpeed.get(3).floatValue(), progressivePointRPM.get(3).floatValue()));
-
-        return progressiveLineEntries;
-    }
-
-    public double calculateRPM(double speed, double ratio, double tireCircumference, double finalDrive) {
-        return (speed * ratio * finalDrive) / (tireCircumference * 0.001 * 60);
-    }
-
-    public ArrayList<Entry> constData(List<Gear> gears, ArrayList<Double> progressivePointRPM,
-            ArrayList<Double> progressivePointSpeed) {
-
-        ArrayList<Entry> lineEntries = new ArrayList<Entry>();
-
-        HashMap<Integer, Double> rpmSpeed1 = gears.get(0).getrRpmSpeeds();
-        HashMap<Integer, Double> rpmSpeed5 = gears.get(4).getrRpmSpeeds();
-
-        lineEntries.add(new Entry(0f, 0f));
-        lineEntries.add(new Entry(rpmSpeed1.get(8000).floatValue(), 8000f));
-        lineEntries.add(new Entry(progressivePointSpeed.get(0).floatValue(), 8000f));
-        lineEntries.add(new Entry(progressivePointSpeed.get(0).floatValue(), progressivePointRPM.get(0).floatValue()));
-        lineEntries.add(new Entry(progressivePointSpeed.get(1).floatValue(), 8000f));
-        lineEntries.add(new Entry(progressivePointSpeed.get(1).floatValue(), progressivePointRPM.get(1).floatValue()));
-        lineEntries.add(new Entry(progressivePointSpeed.get(2).floatValue(), 8000f));
-        lineEntries.add(new Entry(progressivePointSpeed.get(2).floatValue(), progressivePointRPM.get(2).floatValue()));
-        lineEntries.add(new Entry(progressivePointSpeed.get(3).floatValue(), 8000f));
-        lineEntries.add(new Entry(progressivePointSpeed.get(3).floatValue(), progressivePointRPM.get(3).floatValue()));
-        lineEntries.add(new Entry(rpmSpeed5.get(8000).floatValue(), 8000f));
-
-        // progressiveLineEntries
-        // .add(new Entry(progressivePointSpeed.get(0).floatValue(),
-        // progressivePointRPM.get(0).floatValue()));
-        // progressiveLineEntries
-        // .add(new Entry(progressivePointSpeed.get(1).floatValue(),
-        // progressivePointRPM.get(1).floatValue()));
-        // progressiveLineEntries
-        // .add(new Entry(progressivePointSpeed.get(2).floatValue(),
-        // progressivePointRPM.get(2).floatValue()));
-        // progressiveLineEntries
-        // .add(new Entry(progressivePointSpeed.get(3).floatValue(),
-        // progressivePointRPM.get(3).floatValue()));
-
-        return lineEntries;
     }
 }
