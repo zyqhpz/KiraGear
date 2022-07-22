@@ -1,7 +1,10 @@
 package com.example.kiragear;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
@@ -36,10 +39,15 @@ public class MainActivity extends AppCompatActivity {
 
     ArrayList<Entry> lineEntries1 = new ArrayList<Entry>();
     ArrayList<Entry> progressiveLineEntries1 = new ArrayList<Entry>();
+
+    private Button button;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
         // ActivityMainBinding binding =
         // ActivityMainBinding.inflate(getLayoutInflater());
         // View view = binding.getRoot();
@@ -66,6 +74,16 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
         lineChart = findViewById(R.id.line_chart);
+
+        button = (Button) findViewById(R.id.buttonNext);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openNextPage();
+//                Intent intent = new Intent(this, GearInputActivity.class);
+//                startActivity(intent);
+            }
+        });
 
         generateGraph();
 
@@ -189,6 +207,11 @@ public class MainActivity extends AppCompatActivity {
     public void generateGraph() {
         calculateGear();
         calculateGear1();
+    }
+
+    public void openNextPage() {
+        Intent intent = new Intent(this, GearInputActivity.class);
+        startActivity(intent);
     }
 
     public void calculateGear() {
