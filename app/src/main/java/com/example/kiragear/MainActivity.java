@@ -1,6 +1,7 @@
 package com.example.kiragear;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -24,6 +25,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // force to disable DarkMode
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
         setContentView(R.layout.activity_gear_input);
 
         TextView tireWidthLabel = (TextView) findViewById(R.id.tireWidthText);
@@ -55,13 +60,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
         Spinner spinnerWidth = (Spinner) findViewById(R.id.spinnerTireWidth);
-        spinnerWidth.setBackgroundColor(Color.BLACK);
+        spinnerWidth.setBackgroundColor(Color.WHITE);
 
         Spinner spinnerAspectRatio = (Spinner) findViewById(R.id.spinnerTireAspectRatio);
-        spinnerAspectRatio.setBackgroundColor(Color.BLACK);
+        spinnerAspectRatio.setBackgroundColor(Color.WHITE);
 
         Spinner spinnerDiameter = (Spinner) findViewById(R.id.spinnerTireDiameter);
-        spinnerDiameter.setBackgroundColor(Color.BLACK);
+        spinnerDiameter.setBackgroundColor(Color.WHITE);
 
         ArrayAdapter<Integer> adapterWidth = new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item,
                 tireWidthList);
@@ -166,34 +171,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
-
-        // gear1.addTextChangedListener(new TextWatcher() {
-        //
-        // @Override
-        // public void onTextChanged(CharSequence s, int start, int before, int count) {
-        //
-        // if (s.toString().trim().length() == 0) {
-        // button.setEnabled(false);
-        // } else {
-        // button.setEnabled(true);
-        // }
-        // }
-        //
-        // @Override
-        // public void beforeTextChanged(CharSequence s, int start, int count,
-        // int after) {
-        // // TODO Auto-generated method stub
-        //
-        // }
-        //
-        // @Override
-        // public void afterTextChanged(Editable s) {
-        // // TODO Auto-generated method stub
-        //
-        // }
-        // });
-
-        // button = (Button) findViewById(R.id.btnGenerateGraph);
+        
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
