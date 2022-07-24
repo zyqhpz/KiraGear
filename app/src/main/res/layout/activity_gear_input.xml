@@ -8,6 +8,7 @@
     tools:context=".GearInputActivity">
 
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="411dp"
         android:layout_height="637dp"
         android:orientation="vertical"
@@ -24,8 +25,7 @@
             android:id="@+id/spinnerTireWidth"
             android:layout_width="212dp"
             android:layout_height="wrap_content"
-            android:background="@color/black"
-            android:textColor="@color/white" />
+            android:textColor="#fff"/>
 
         <TextView
             android:id="@+id/tireAspectRatioText"
@@ -212,6 +212,7 @@
             android:id="@+id/btnGenerateGraph"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="Generate Graph" />
 
     </LinearLayout>
