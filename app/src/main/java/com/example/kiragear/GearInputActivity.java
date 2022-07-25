@@ -21,6 +21,9 @@ public class GearInputActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+//        getApplication().setTheme();
+
         setContentView(R.layout.activity_gear_input);
 
         TextView tireWidthLabel = (TextView) findViewById(R.id.tireWidthText);
@@ -52,7 +55,7 @@ public class GearInputActivity extends AppCompatActivity {
         }
 
         Spinner spinnerWidth = (Spinner) findViewById(R.id.spinnerTireWidth);
-        spinnerWidth.setBackgroundColor(Color.BLACK);
+        spinnerWidth.setBackgroundColor(Color.WHITE);
 
         Spinner spinnerAspectRatio = (Spinner) findViewById(R.id.spinnerTireAspectRatio);
         spinnerAspectRatio.setBackgroundColor(Color.BLACK);

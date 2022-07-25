@@ -130,8 +130,9 @@ public class GeneratedGraphViewer extends AppCompatActivity {
 
         lineChart.setData(new LineData(dataSets));
 
-        lineChart.getDescription().setText("");
+        lineChart.getDescription().setText("KiraGear");
         lineChart.getDescription().setTextColor(Color.BLACK);
+        lineChart.getDescription().setTextSize(10f);
         lineChart.getAxisLeft().setTextColor(Color.BLACK);
         lineChart.getXAxis().setTextColor(Color.BLACK);
         lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
