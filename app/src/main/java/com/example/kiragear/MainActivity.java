@@ -12,11 +12,17 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.ToggleButton;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -131,16 +137,40 @@ public class MainActivity extends AppCompatActivity {
         button = (Button) findViewById(R.id.btnGenerateGraph);
         button.setEnabled(false);
 
-        EditText gear1 = findViewById(R.id.gearOneRatioInput);
-        EditText gear2 = findViewById(R.id.gearTwoRatioInput);
-        EditText gear3 = findViewById(R.id.gearThreeRatioInput);
-        EditText gear4 = findViewById(R.id.gearFourRatioInput);
-        EditText gear5 = findViewById(R.id.gearFiveRatioInput);
+        EditText gear1 = findViewById(R.id.tuningOneGearOneRatioInput);
+        // gear1.setText("Disabled");
+        // gear1.setFocusable(false);
+        // gear1.setEnabled(false);
+
+        EditText gear2 = findViewById(R.id.tuningOneGearTwoRatioInput);
+        EditText gear3 = findViewById(R.id.tuningOneGearThreeRatioInput);
+        EditText gear4 = findViewById(R.id.tuningOneGearFourRatioInput);
+        EditText gear5 = findViewById(R.id.tuningOneGearFiveRatioInput);
+
+        List<EditText> tuningTwo = new ArrayList<EditText>();
+
+        tuningTwo = setTuningTwo();
 
         EditText finalDrive1 = findViewById(R.id.finalDriveTuning1Input);
         EditText finalDrive2 = findViewById(R.id.finalDriveTuning2Input);
 
         ArrayList<EditText> gearsInput = new ArrayList<EditText>(Arrays.asList(gear1, gear2, gear3, gear4, gear5));
+
+        Switch switchIsSameGearRatio = (Switch) findViewById(R.id.switchTuningOneTwoSameRatio);
+
+        List<EditText> finalTuningTwo = tuningTwo;
+        switchIsSameGearRatio.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked == true) {
+                    Toast.makeText(getBaseContext(), "Same Ratio On", Toast.LENGTH_SHORT).show();
+                    isSameGearRatio(finalTuningTwo, true);
+                } else {
+                    Toast.makeText(getBaseContext(), "Same Ratio Off", Toast.LENGTH_SHORT).show();
+                    isSameGearRatio(finalTuningTwo, false);
+                }
+            }
+        });
 
         for (EditText gearInput : gearsInput) {
             gearInput.addTextChangedListener(new TextWatcher() {
@@ -171,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
-        
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -190,6 +220,41 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public ArrayList<EditText> setTuningTwo() {
+        ArrayList<EditText> tuningTwo = new ArrayList<EditText>();
+        EditText gear1 = findViewById(R.id.tuningTwoGearOneRatioInput);
+        EditText gear2 = findViewById(R.id.tuningTwoGearTwoRatioInput);
+        EditText gear3 = findViewById(R.id.tuningTwoGearThreeRatioInput);
+        EditText gear4 = findViewById(R.id.tuningTwoGearFourRatioInput);
+        EditText gear5 = findViewById(R.id.tuningTwoGearFiveRatioInput);
+
+        tuningTwo.add(gear1);
+        tuningTwo.add(gear2);
+        tuningTwo.add(gear3);
+        tuningTwo.add(gear4);
+        tuningTwo.add(gear5);
+
+        return tuningTwo;
+    }
+
+    public void isSameGearRatio(List<EditText> tuningTwo, boolean isSame) {
+        if (isSame) {
+            for (EditText gearInput : tuningTwo) {
+                gearInput.setText("Disabled");
+                gearInput.setEnabled(false);
+                gearInput.setFocusable(false);
+                gearInput.setTextColor(Color.parseColor("#808080"));
+            }
+        } else {
+            for (EditText gearInput : tuningTwo) {
+                gearInput.setText("");
+                gearInput.setEnabled(true);
+                gearInput.setFocusable(true);
+                gearInput.setTextColor(Color.parseColor("#808080"));
+            }
+        }
     }
 
     public void generateGraph(int width, int aspectRatio, int diameter, ArrayList<Double> gearRatios,
