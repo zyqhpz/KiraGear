@@ -94,9 +94,6 @@ public class MainActivity extends AppCompatActivity {
         final int[] tireDiameter = { 0 };
 
         spinnerWidth.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-            int item;
-
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long arg3) {
                 tireWidth[0] = tireWidthList.get(position).intValue();
@@ -137,37 +134,48 @@ public class MainActivity extends AppCompatActivity {
         button = (Button) findViewById(R.id.btnGenerateGraph);
         button.setEnabled(false);
 
-        EditText gear1 = findViewById(R.id.tuningOneGearOneRatioInput);
-        // gear1.setText("Disabled");
-        // gear1.setFocusable(false);
-        // gear1.setEnabled(false);
+        EditText tuningOneGearOne = findViewById(R.id.tuningOneGearOneRatioInput);
+        EditText tuningOneGearTwo = findViewById(R.id.tuningOneGearTwoRatioInput);
+        EditText tuningOneGearThree = findViewById(R.id.tuningOneGearThreeRatioInput);
+        EditText tuningOneGearFour = findViewById(R.id.tuningOneGearFourRatioInput);
+        EditText tuningOneGearFive = findViewById(R.id.tuningOneGearFiveRatioInput);
 
-        EditText gear2 = findViewById(R.id.tuningOneGearTwoRatioInput);
-        EditText gear3 = findViewById(R.id.tuningOneGearThreeRatioInput);
-        EditText gear4 = findViewById(R.id.tuningOneGearFourRatioInput);
-        EditText gear5 = findViewById(R.id.tuningOneGearFiveRatioInput);
+        EditText tuningTwoGearOne = findViewById(R.id.tuningTwoGearOneRatioInput);
+        EditText tuningTwoGearTwo = findViewById(R.id.tuningTwoGearTwoRatioInput);
+        EditText tuningTwoGearThree = findViewById(R.id.tuningTwoGearThreeRatioInput);
+        EditText tuningTwoGearFour = findViewById(R.id.tuningTwoGearFourRatioInput);
+        EditText tuningTwoGearFive = findViewById(R.id.tuningTwoGearFiveRatioInput);
 
         List<EditText> tuningTwo = new ArrayList<EditText>();
 
         tuningTwo = setTuningTwo();
 
         EditText finalDrive1 = findViewById(R.id.finalDriveTuning1Input);
-        EditText finalDrive2 = findViewById(R.id.finalDriveTuning2Input);
+        final EditText[] finalDrive2 = {findViewById(R.id.finalDriveTuning2Input)};
 
-        ArrayList<EditText> gearsInput = new ArrayList<EditText>(Arrays.asList(gear1, gear2, gear3, gear4, gear5));
+        ArrayList<EditText> gearsInput = new ArrayList<EditText>(Arrays.asList(tuningOneGearOne, tuningOneGearTwo,
+                tuningOneGearThree, tuningOneGearFour, tuningOneGearFive));
+
+        ArrayList<EditText> gearsInputAll = new ArrayList<EditText>(Arrays.asList(tuningOneGearOne, tuningOneGearTwo,
+                tuningOneGearThree, tuningOneGearFour, tuningOneGearFive, tuningTwoGearOne, tuningTwoGearTwo,
+                tuningTwoGearThree, tuningTwoGearFour, tuningTwoGearFive));
 
         Switch switchIsSameGearRatio = (Switch) findViewById(R.id.switchTuningOneTwoSameRatio);
+        switchIsSameGearRatio.setChecked(false);
 
         List<EditText> finalTuningTwo = tuningTwo;
+        final boolean[] isSame = {false};
         switchIsSameGearRatio.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked == true) {
                     Toast.makeText(getBaseContext(), "Same Ratio On", Toast.LENGTH_SHORT).show();
                     isSameGearRatio(finalTuningTwo, true);
+                    isSame[0] = true;
                 } else {
                     Toast.makeText(getBaseContext(), "Same Ratio Off", Toast.LENGTH_SHORT).show();
                     isSameGearRatio(finalTuningTwo, false);
+                    isSame[0] = false;
                 }
             }
         });
@@ -182,17 +190,35 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                    CharSequence s1 = gear1.getText().toString().trim();
-                    CharSequence s2 = gear2.getText().toString().trim();
-                    CharSequence s3 = gear3.getText().toString().trim();
-                    CharSequence s4 = gear4.getText().toString().trim();
-                    CharSequence s5 = gear5.getText().toString().trim();
+                    CharSequence t1g1 = tuningOneGearOne.getText().toString().trim();
+                    CharSequence t1g2 = tuningOneGearTwo.getText().toString().trim();
+                    CharSequence t1g3 = tuningOneGearThree.getText().toString().trim();
+                    CharSequence t1g4 = tuningOneGearFour.getText().toString().trim();
+                    CharSequence t1g5 = tuningOneGearFive.getText().toString().trim();
 
-                    if (s1.length() > 0 && s2.length() > 0 && s3.length() > 0 && s4.length() > 0 && s5.length() > 0) {
-                        button.setEnabled(true);
+                    CharSequence t2g1 = tuningTwoGearOne.getText().toString().trim();
+                    CharSequence t2g2 = tuningTwoGearTwo.getText().toString().trim();
+                    CharSequence t2g3 = tuningTwoGearThree.getText().toString().trim();
+                    CharSequence t2g4 = tuningTwoGearFour.getText().toString().trim();
+                    CharSequence t2g5 = tuningTwoGearFive.getText().toString().trim();
+
+                    if (isSame[0]) {
+                        if (t1g1.length() > 0 && t1g2.length() > 0 && t1g3.length() > 0 && t1g4.length() > 0
+                                && t1g5.length() > 0) {
+                            button.setEnabled(true);
+                        } else {
+                            button.setEnabled(false);
+                        }
                     } else {
-                        button.setEnabled(false);
+                        if (t1g1.length() > 0 && t1g2.length() > 0 && t1g3.length() > 0 && t1g4.length() > 0
+                                && t1g5.length() > 0 && t2g1.length() > 0 && t2g2.length() > 0 && t2g3.length() > 0
+                                && t2g4.length() > 0 && t2g5.length() > 0) {
+                            button.setEnabled(true);
+                        } else {
+                            button.setEnabled(false);
+                        }
                     }
+
                 }
 
                 @Override
@@ -206,15 +232,31 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 ArrayList<Double> gearRatios = new ArrayList<Double>();
-                gearRatios.add(Double.parseDouble(gear1.getText().toString()));
-                gearRatios.add(Double.parseDouble(gear2.getText().toString()));
-                gearRatios.add(Double.parseDouble(gear3.getText().toString()));
-                gearRatios.add(Double.parseDouble(gear4.getText().toString()));
-                gearRatios.add(Double.parseDouble(gear5.getText().toString()));
+
+                if (isSame[0]) {
+                    gearRatios = new ArrayList<Double>();
+                    gearRatios.add(Double.parseDouble(tuningOneGearOne.getText().toString()));
+                    gearRatios.add(Double.parseDouble(tuningOneGearTwo.getText().toString()));
+                    gearRatios.add(Double.parseDouble(tuningOneGearThree.getText().toString()));
+                    gearRatios.add(Double.parseDouble(tuningOneGearFour.getText().toString()));
+                    gearRatios.add(Double.parseDouble(tuningOneGearFive.getText().toString()));
+                } else {
+                    gearRatios = new ArrayList<Double>();
+                    gearRatios.add(Double.parseDouble(tuningOneGearOne.getText().toString()));
+                    gearRatios.add(Double.parseDouble(tuningOneGearTwo.getText().toString()));
+                    gearRatios.add(Double.parseDouble(tuningOneGearThree.getText().toString()));
+                    gearRatios.add(Double.parseDouble(tuningOneGearFour.getText().toString()));
+                    gearRatios.add(Double.parseDouble(tuningOneGearFive.getText().toString()));
+                    gearRatios.add(Double.parseDouble(tuningTwoGearOne.getText().toString()));
+                    gearRatios.add(Double.parseDouble(tuningTwoGearTwo.getText().toString()));
+                    gearRatios.add(Double.parseDouble(tuningTwoGearThree.getText().toString()));
+                    gearRatios.add(Double.parseDouble(tuningTwoGearFour.getText().toString()));
+                    gearRatios.add(Double.parseDouble(tuningTwoGearFive.getText().toString()));
+                }
 
                 ArrayList<Double> finalDrives = new ArrayList<Double>();
                 finalDrives.add(Double.parseDouble(finalDrive1.getText().toString()));
-                finalDrives.add(Double.parseDouble(finalDrive2.getText().toString()));
+                finalDrives.add(Double.parseDouble(finalDrive2[0].getText().toString()));
 
                 generateGraph(tireWidth[0], tireAspectRatio[0], tireDiameter[0], gearRatios, finalDrives);
             }
