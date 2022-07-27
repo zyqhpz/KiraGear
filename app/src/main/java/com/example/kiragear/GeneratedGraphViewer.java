@@ -15,8 +15,10 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -169,6 +171,12 @@ public class GeneratedGraphViewer extends AppCompatActivity {
         lineChart.getXAxis().setTextColor(Color.BLACK);
         lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
 
+        ValueFormatter xAxisFormatter = new SpeedAxisValueFormatter(lineChart);
+        lineChart.getXAxis().setValueFormatter(xAxisFormatter);
+
+        ValueFormatter yAxisFormatter = new RpmAxisValueFormatter(lineChart);
+        lineChart.getAxisLeft().setValueFormatter(yAxisFormatter);
+
         lineChart.getAxisRight().setEnabled(false);
 
         lineChart.fitScreen();
@@ -178,6 +186,8 @@ public class GeneratedGraphViewer extends AppCompatActivity {
 
         lineChart.getXAxis().setAxisMinimum(0);
         lineChart.getXAxis().setAxisMaximum(highestX + 20);
+
+        lineChart.animateXY(1500, 500);
 
         // Legend
         Legend legend = lineChart.getLegend();
@@ -335,5 +345,34 @@ public class GeneratedGraphViewer extends AppCompatActivity {
         }
 
         return lineEntries;
+    }
+
+    public class SpeedAxisValueFormatter extends ValueFormatter {
+//        private final BarLineChartBase<?> chart;
+        private final LineChart chart;
+        public SpeedAxisValueFormatter(LineChart chart) {
+            this.chart = chart;
+        }
+        @Override
+        public String getFormattedValue(float value) {
+            return (int) value + "km/h";
+        }
+    }
+
+    public class RpmAxisValueFormatter extends ValueFormatter {
+        private final LineChart chart;
+        public RpmAxisValueFormatter(LineChart chart) {
+            this.chart = chart;
+        }
+        @Override
+        public String getFormattedValue(float value) {
+//            String number = "1000500000.574";
+//            Str
+            double amount = Double.parseDouble(String.valueOf(value));
+            DecimalFormat formatter = new DecimalFormat("#,###");
+
+//            System.out.println(formatter.format(amount));
+            return formatter.format(amount) + "RPM";
+        }
     }
 }
