@@ -2,14 +2,11 @@ package com.example.kiragear;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.os.Bundle;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
@@ -18,8 +15,10 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,6 +42,9 @@ public class GeneratedGraphViewer extends AppCompatActivity {
 
     double[] ratio = new double[5];
 
+    double[] tuning1Ratio = new double[5];
+    double[] tuning2Ratio = new double[5];
+
     double finalDriveOne;
     double finalDriveTwo;
 
@@ -62,28 +64,57 @@ public class GeneratedGraphViewer extends AppCompatActivity {
         tire.setAspectRatio(extras.getInt("aspectRatio"));
         tire.setDiameter(extras.getInt("diameter"));
 
-        // ratio = extras.getDoubleArray("gearRatios");
-
-        double ratio1 = extras.getDouble("gearOne");
-        double ratio2 = extras.getDouble("gearTwo");
-        double ratio3 = extras.getDouble("gearThree");
-        double ratio4 = extras.getDouble("gearFour");
-        double ratio5 = extras.getDouble("gearFive");
-
-        // insert all ratio values into an array
-        ratio[0] = ratio1;
-        ratio[1] = ratio2;
-        ratio[2] = ratio3;
-        ratio[3] = ratio4;
-        ratio[4] = ratio5;
-
         // get the final drive values
         finalDriveOne = extras.getDouble("finalDriveOne");
         finalDriveTwo = extras.getDouble("finalDriveTwo");
 
-        lineChart = findViewById(R.id.line_chart);
+        boolean isSame = extras.getBoolean("isSame");
 
-        generateGraph();
+        if (isSame) {
+            double ratio1 = extras.getDouble("gearOne");
+            double ratio2 = extras.getDouble("gearTwo");
+            double ratio3 = extras.getDouble("gearThree");
+            double ratio4 = extras.getDouble("gearFour");
+            double ratio5 = extras.getDouble("gearFive");
+
+            // insert all ratio values into an array
+            tuning1Ratio[0] = ratio1;
+            tuning1Ratio[1] = ratio2;
+            tuning1Ratio[2] = ratio3;
+            tuning1Ratio[3] = ratio4;
+            tuning1Ratio[4] = ratio5;
+
+            generateGraph(true);
+        } else {
+            double tuningOneRatio1 = extras.getDouble("tuningOneGearOne");
+            double tuningOneRatio2 = extras.getDouble("tuningOneGearTwo");
+            double tuningOneRatio3 = extras.getDouble("tuningOneGearThree");
+            double tuningOneRatio4 = extras.getDouble("tuningOneGearFour");
+            double tuningOneRatio5 = extras.getDouble("tuningOneGearFive");
+
+            double tuningTwoRatio1 = extras.getDouble("tuningTwoGearOne");
+            double tuningTwoRatio2 = extras.getDouble("tuningTwoGearTwo");
+            double tuningTwoRatio3 = extras.getDouble("tuningTwoGearThree");
+            double tuningTwoRatio4 = extras.getDouble("tuningTwoGearFour");
+            double tuningTwoRatio5 = extras.getDouble("tuningTwoGearFive");
+
+            // insert all ratio values into an array
+            tuning1Ratio[0] = tuningOneRatio1;
+            tuning1Ratio[1] = tuningOneRatio2;
+            tuning1Ratio[2] = tuningOneRatio3;
+            tuning1Ratio[3] = tuningOneRatio4;
+            tuning1Ratio[4] = tuningOneRatio5;
+
+            tuning2Ratio[0] = tuningTwoRatio1;
+            tuning2Ratio[1] = tuningTwoRatio2;
+            tuning2Ratio[2] = tuningTwoRatio3;
+            tuning2Ratio[3] = tuningTwoRatio4;
+            tuning2Ratio[4] = tuningTwoRatio5;
+
+            generateGraph(false);
+        }
+
+        lineChart = findViewById(R.id.line_chart);
 
         lineChart.setScaleEnabled(false);
 
@@ -133,11 +164,18 @@ public class GeneratedGraphViewer extends AppCompatActivity {
 
         lineChart.setData(new LineData(dataSets));
 
-        lineChart.getDescription().setText("");
+        lineChart.getDescription().setText("KiraGear");
         lineChart.getDescription().setTextColor(Color.BLACK);
+        lineChart.getDescription().setTextSize(10f);
         lineChart.getAxisLeft().setTextColor(Color.BLACK);
         lineChart.getXAxis().setTextColor(Color.BLACK);
         lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+
+        ValueFormatter xAxisFormatter = new SpeedAxisValueFormatter(lineChart);
+        lineChart.getXAxis().setValueFormatter(xAxisFormatter);
+
+        ValueFormatter yAxisFormatter = new RpmAxisValueFormatter(lineChart);
+        lineChart.getAxisLeft().setValueFormatter(yAxisFormatter);
 
         lineChart.getAxisRight().setEnabled(false);
 
@@ -149,6 +187,8 @@ public class GeneratedGraphViewer extends AppCompatActivity {
         lineChart.getXAxis().setAxisMinimum(0);
         lineChart.getXAxis().setAxisMaximum(highestX + 20);
 
+        lineChart.animateXY(1500, 500);
+
         // Legend
         Legend legend = lineChart.getLegend();
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
@@ -158,14 +198,9 @@ public class GeneratedGraphViewer extends AppCompatActivity {
         // legend.setDrawInside(false);
     }
 
-    public void generateGraph() {
+    public void generateGraph(boolean isSame) {
         calculateGear();
-        calculateGear1();
-    }
-
-    public void openNextPage() {
-        Intent intent = new Intent(this, GearInputActivity.class);
-        startActivity(intent);
+        calculateGear1(isSame);
     }
 
     public void calculateGear() {
@@ -176,13 +211,11 @@ public class GeneratedGraphViewer extends AppCompatActivity {
 
         double tireCircumference = tire.getCircumference();
 
-        // ratio = { 2.976190476, 2.105263158, 1.615508885, 1.277139208, 1.030927835 };
-
         List<Gear> gears = new ArrayList<Gear>();
 
-        for (int i = 0; i < ratio.length; i++) {
+        for (int i = 0; i < tuning1Ratio.length; i++) {
             Gear gear = new Gear();
-            gear.setRatio(ratio[i]);
+            gear.setRatio(tuning1Ratio[i]);
             gears.add(gear);
         }
 
@@ -215,32 +248,31 @@ public class GeneratedGraphViewer extends AppCompatActivity {
         progressiveLineEntries = constructProgressiveLine(progressivePointRPM, progressivePointSpeed);
     }
 
-    public void calculateGear1() {
-        Tire tire = new Tire();
+    public void calculateGear1(boolean isSame) {
         Gear gear = new Gear();
         Tuning tuning = new Tuning();
-
-        tire.setWidth(185);
-        tire.setAspectRatio(50);
-        tire.setDiameter(17);
 
         ArrayList<Double> progressivePointRPM = new ArrayList<>();
         ArrayList<Double> progressivePointSpeed = new ArrayList<>();
 
         double tireCircumference = tire.getCircumference();
 
-        // double[] ratio = { 2.976190476, 2.105263158, 1.615508885, 1.277139208,
-        // 1.030927835 };
-
         List<Gear> gears = new ArrayList<Gear>();
 
-        for (int i = 0; i < ratio.length; i++) {
-            gear = new Gear();
-            gear.setRatio(ratio[i]);
-            gears.add(gear);
+        if (isSame) {
+            for (int i = 0; i < tuning1Ratio.length; i++) {
+                gear = new Gear();
+                gear.setRatio(tuning1Ratio[i]);
+                gears.add(gear);
+            }
+        } else {
+            for (int i = 0; i < tuning2Ratio.length; i++) {
+                gear = new Gear();
+                gear.setRatio(tuning2Ratio[i]);
+                gears.add(gear);
+            }
         }
 
-        // double finalDrive = 5.0;
         double finalDrive = finalDriveTwo;
 
         tuning.setGears(gears);
@@ -264,9 +296,7 @@ public class GeneratedGraphViewer extends AppCompatActivity {
                 progressivePointSpeed.add(last);
             }
         }
-
         lineEntries1 = constructData(gears, progressivePointRPM, progressivePointSpeed);
-
         progressiveLineEntries1 = constructProgressiveLine(progressivePointRPM, progressivePointSpeed);
     }
 
@@ -315,5 +345,34 @@ public class GeneratedGraphViewer extends AppCompatActivity {
         }
 
         return lineEntries;
+    }
+
+    public class SpeedAxisValueFormatter extends ValueFormatter {
+//        private final BarLineChartBase<?> chart;
+        private final LineChart chart;
+        public SpeedAxisValueFormatter(LineChart chart) {
+            this.chart = chart;
+        }
+        @Override
+        public String getFormattedValue(float value) {
+            return (int) value + "km/h";
+        }
+    }
+
+    public class RpmAxisValueFormatter extends ValueFormatter {
+        private final LineChart chart;
+        public RpmAxisValueFormatter(LineChart chart) {
+            this.chart = chart;
+        }
+        @Override
+        public String getFormattedValue(float value) {
+//            String number = "1000500000.574";
+//            Str
+            double amount = Double.parseDouble(String.valueOf(value));
+            DecimalFormat formatter = new DecimalFormat("#,###");
+
+//            System.out.println(formatter.format(amount));
+            return formatter.format(amount) + "RPM";
+        }
     }
 }
