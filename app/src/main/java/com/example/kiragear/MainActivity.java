@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
         tuningTwo = setTuningTwo();
 
         EditText finalDrive1 = findViewById(R.id.finalDriveTuning1Input);
-        final EditText[] finalDrive2 = {findViewById(R.id.finalDriveTuning2Input)};
+        final EditText[] finalDrive2 = { findViewById(R.id.finalDriveTuning2Input) };
 
         ArrayList<EditText> gearsInput = new ArrayList<EditText>(Arrays.asList(tuningOneGearOne, tuningOneGearTwo,
                 tuningOneGearThree, tuningOneGearFour, tuningOneGearFive));
@@ -164,11 +164,11 @@ public class MainActivity extends AppCompatActivity {
         switchIsSameGearRatio.setChecked(false);
 
         List<EditText> finalTuningTwo = tuningTwo;
-        final boolean[] isSame = {false};
+        final boolean[] isSame = { false };
         switchIsSameGearRatio.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked == true) {
+                if (isChecked) {
                     Toast.makeText(getBaseContext(), "Same Ratio On", Toast.LENGTH_SHORT).show();
                     isSameGearRatio(finalTuningTwo, true);
                     isSame[0] = true;
@@ -180,36 +180,60 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        for (EditText gearInput : gearsInput) {
-            gearInput.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        if (isSame[0]) {
+            for (EditText gearInput : gearsInput) {
+                gearInput.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-                }
+                    }
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                    CharSequence t1g1 = tuningOneGearOne.getText().toString().trim();
-                    CharSequence t1g2 = tuningOneGearTwo.getText().toString().trim();
-                    CharSequence t1g3 = tuningOneGearThree.getText().toString().trim();
-                    CharSequence t1g4 = tuningOneGearFour.getText().toString().trim();
-                    CharSequence t1g5 = tuningOneGearFive.getText().toString().trim();
+                        CharSequence t1g1 = tuningOneGearOne.getText().toString().trim();
+                        CharSequence t1g2 = tuningOneGearTwo.getText().toString().trim();
+                        CharSequence t1g3 = tuningOneGearThree.getText().toString().trim();
+                        CharSequence t1g4 = tuningOneGearFour.getText().toString().trim();
+                        CharSequence t1g5 = tuningOneGearFive.getText().toString().trim();
 
-                    CharSequence t2g1 = tuningTwoGearOne.getText().toString().trim();
-                    CharSequence t2g2 = tuningTwoGearTwo.getText().toString().trim();
-                    CharSequence t2g3 = tuningTwoGearThree.getText().toString().trim();
-                    CharSequence t2g4 = tuningTwoGearFour.getText().toString().trim();
-                    CharSequence t2g5 = tuningTwoGearFive.getText().toString().trim();
-
-                    if (isSame[0]) {
                         if (t1g1.length() > 0 && t1g2.length() > 0 && t1g3.length() > 0 && t1g4.length() > 0
                                 && t1g5.length() > 0) {
                             button.setEnabled(true);
                         } else {
                             button.setEnabled(false);
                         }
-                    } else {
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+
+                    }
+                });
+            }
+        } else {
+            for (EditText gearInput : gearsInputAll) {
+                gearInput.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                        CharSequence t1g1 = tuningOneGearOne.getText().toString().trim();
+                        CharSequence t1g2 = tuningOneGearTwo.getText().toString().trim();
+                        CharSequence t1g3 = tuningOneGearThree.getText().toString().trim();
+                        CharSequence t1g4 = tuningOneGearFour.getText().toString().trim();
+                        CharSequence t1g5 = tuningOneGearFive.getText().toString().trim();
+
+                        CharSequence t2g1 = tuningTwoGearOne.getText().toString().trim();
+                        CharSequence t2g2 = tuningTwoGearTwo.getText().toString().trim();
+                        CharSequence t2g3 = tuningTwoGearThree.getText().toString().trim();
+                        CharSequence t2g4 = tuningTwoGearFour.getText().toString().trim();
+                        CharSequence t2g5 = tuningTwoGearFive.getText().toString().trim();
+
                         if (t1g1.length() > 0 && t1g2.length() > 0 && t1g3.length() > 0 && t1g4.length() > 0
                                 && t1g5.length() > 0 && t2g1.length() > 0 && t2g2.length() > 0 && t2g3.length() > 0
                                 && t2g4.length() > 0 && t2g5.length() > 0) {
@@ -219,19 +243,18 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
 
-                }
+                    @Override
+                    public void afterTextChanged(Editable s) {
 
-                @Override
-                public void afterTextChanged(Editable s) {
-
-                }
-            });
+                    }
+                });
+            }
         }
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ArrayList<Double> gearRatios = new ArrayList<Double>();
+                ArrayList<Double> gearRatios;
 
                 if (isSame[0]) {
                     gearRatios = new ArrayList<Double>();
@@ -286,15 +309,15 @@ public class MainActivity extends AppCompatActivity {
             for (EditText gearInput : tuningTwo) {
                 gearInput.setText("Disabled");
                 gearInput.setEnabled(false);
-                gearInput.setFocusable(false);
-                gearInput.setTextColor(Color.parseColor("#808080"));
+//                gearInput.setFocusable(false);
+                gearInput.setTextColor(Color.parseColor("black"));
             }
         } else {
             for (EditText gearInput : tuningTwo) {
                 gearInput.setText("");
                 gearInput.setEnabled(true);
-                gearInput.setFocusable(true);
-                gearInput.setTextColor(Color.parseColor("#808080"));
+//                gearInput.setFocusable(true);
+                gearInput.setTextColor(Color.parseColor("black"));
             }
         }
     }
@@ -306,11 +329,29 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("aspectRatio", aspectRatio);
         intent.putExtra("diameter", diameter);
 
-        intent.putExtra("gearOne", gearRatios.get(0));
-        intent.putExtra("gearTwo", gearRatios.get(1));
-        intent.putExtra("gearThree", gearRatios.get(2));
-        intent.putExtra("gearFour", gearRatios.get(3));
-        intent.putExtra("gearFive", gearRatios.get(4));
+        if (gearRatios.size() <= 5) {
+            intent.putExtra("gearOne", gearRatios.get(0));
+            intent.putExtra("gearTwo", gearRatios.get(1));
+            intent.putExtra("gearThree", gearRatios.get(2));
+            intent.putExtra("gearFour", gearRatios.get(3));
+            intent.putExtra("gearFive", gearRatios.get(4));
+
+            intent.putExtra("isSame", true);
+        } else {
+            intent.putExtra("tuningOneGearOne", gearRatios.get(0));
+            intent.putExtra("tuningOneGearTwo", gearRatios.get(1));
+            intent.putExtra("tuningOneGearThree", gearRatios.get(2));
+            intent.putExtra("tuningOneGearFour", gearRatios.get(3));
+            intent.putExtra("tuningOneGearFive", gearRatios.get(4));
+
+            intent.putExtra("tuningTwoGearOne", gearRatios.get(5));
+            intent.putExtra("tuningTwoGearTwo", gearRatios.get(6));
+            intent.putExtra("tuningTwoGearThree", gearRatios.get(7));
+            intent.putExtra("tuningTwoGearFour", gearRatios.get(8));
+            intent.putExtra("tuningTwoGearFive", gearRatios.get(9));
+
+            intent.putExtra("isSame", false);
+        }
 
         intent.putExtra("finalDriveOne", finalDrives.get(0));
         intent.putExtra("finalDriveTwo", finalDrives.get(1));
