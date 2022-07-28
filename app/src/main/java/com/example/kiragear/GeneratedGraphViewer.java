@@ -121,7 +121,7 @@ public class GeneratedGraphViewer extends AppCompatActivity {
         LineDataSet progressiveLineDataSet = new LineDataSet(progressiveLineEntries, "Progressive Line Tuning 1");
         progressiveLineDataSet.enableDashedLine(5, 10, 0);
         progressiveLineDataSet.setLineWidth(2f);
-        progressiveLineDataSet.setColor(Color.BLUE);
+        progressiveLineDataSet.setColor(Color.parseColor("#0492c2"));
         progressiveLineDataSet.setDrawValues(false);
         progressiveLineDataSet.setDrawCircles(false);
         progressiveLineDataSet.setFormLineWidth(1f);
@@ -131,7 +131,8 @@ public class GeneratedGraphViewer extends AppCompatActivity {
 
         LineDataSet lineDataSet = new LineDataSet(lineEntries, "Tuning 1");
         lineDataSet.setLineWidth(2f);
-        lineDataSet.setColor(Color.BLUE);
+        // #63c6da
+        lineDataSet.setColor(Color.parseColor("#0492c2"));
         lineDataSet.setDrawValues(false);
         lineDataSet.setDrawCircles(false);
         lineDataSet.setFormLineWidth(1f);
