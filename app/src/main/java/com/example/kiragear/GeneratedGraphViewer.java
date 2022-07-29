@@ -219,25 +219,20 @@ public class GeneratedGraphViewer extends AppCompatActivity {
                 Calendar c = Calendar.getInstance();
                 SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-                // separate date and time
-                String[] dateTime = df.format(c.getTime()).split(" ");
-                String date = dateTime[0];
-                String time = dateTime[1];
+                // convert to epoch time
                 String formattedDate = df.format(c.getTime());
+                long epochTime = 0;
+                try {
+                    epochTime = df.parse(formattedDate).getTime();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
-                String fileName = date + "_" + time;
-
-//                Bitmap.CompressFormat
-                // lineChart.saveToGallery("LineChart" + date + "_" + time + ".jpg", "KiraGear", "KiraGear", Bitmap.CompressFormat.JPEG  , 100)
-
-                if (lineChart.saveToGallery("LineChart" + date + "_" + time + ".jpg", 95)) {
+                if (lineChart.saveToGallery("LineChart_" + epochTime + ".jpg", "KiraGear", "", Bitmap.CompressFormat.JPEG  , 100)) {
                     Toast.makeText(getBaseContext(), "Chart has been saved!", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getBaseContext(), "Saving failed", Toast.LENGTH_SHORT).show();
-
                 }
-//                lineChart.saveTo
-//                lineChart.saveToPath(fileName + ".jpg", "/Internal storage/Download/");
             }
         });
 
