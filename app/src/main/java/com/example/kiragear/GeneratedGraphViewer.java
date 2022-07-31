@@ -228,7 +228,8 @@ public class GeneratedGraphViewer extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                if (lineChart.saveToGallery("LineChart_" + epochTime + ".jpg", "KiraGear", "", Bitmap.CompressFormat.JPEG  , 100)) {
+                if (lineChart.saveToGallery("LineChart_" + epochTime + ".jpg", "KiraGear", "",
+                        Bitmap.CompressFormat.JPEG, 100)) {
                     Toast.makeText(getBaseContext(), "Chart has been saved!", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getBaseContext(), "Saving failed", Toast.LENGTH_SHORT).show();
@@ -388,7 +389,6 @@ public class GeneratedGraphViewer extends AppCompatActivity {
     }
 
     public class SpeedAxisValueFormatter extends ValueFormatter {
-        // private final BarLineChartBase<?> chart;
         private final LineChart chart;
 
         public SpeedAxisValueFormatter(LineChart chart) {
@@ -410,12 +410,8 @@ public class GeneratedGraphViewer extends AppCompatActivity {
 
         @Override
         public String getFormattedValue(float value) {
-            // String number = "1000500000.574";
-            // Str
             double amount = Double.parseDouble(String.valueOf(value));
             DecimalFormat formatter = new DecimalFormat("#,###");
-
-            // System.out.println(formatter.format(amount));
             return formatter.format(amount) + "RPM";
         }
     }
