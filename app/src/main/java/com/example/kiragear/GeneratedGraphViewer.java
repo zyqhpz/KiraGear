@@ -201,10 +201,16 @@ public class GeneratedGraphViewer extends AppCompatActivity {
         // Legend
         Legend legend = lineChart.getLegend();
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
-        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
-//         legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        // legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
+        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
+        legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        // legend.setPosition(Legend.LegendPosition.BELOW_CHART_LEFT);
+        legend.setDrawInside(false);
+
+        legend.setXEntrySpace(35);
+        legend.setYEntrySpace(4);
+        legend.setFormToTextSpace(10);
         legend.setWordWrapEnabled(true);
-         legend.setDrawInside(false);
 
         saveGallery.setOnClickListener(new View.OnClickListener() {
             @Override
