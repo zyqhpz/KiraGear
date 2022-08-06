@@ -130,7 +130,7 @@ public class GeneratedGraphViewer extends AppCompatActivity {
         LineDataSet progressiveLineDataSet = new LineDataSet(progressiveLineEntries, "Progressive Line Tuning 1");
         progressiveLineDataSet.enableDashedLine(5, 10, 0);
         progressiveLineDataSet.setLineWidth(2f);
-        progressiveLineDataSet.setColor(Color.parseColor("#0492c2"));
+        progressiveLineDataSet.setColor(Color.parseColor("#356071"));
         progressiveLineDataSet.setDrawValues(false);
         progressiveLineDataSet.setDrawCircles(false);
         progressiveLineDataSet.setFormLineWidth(1f);
@@ -140,8 +140,7 @@ public class GeneratedGraphViewer extends AppCompatActivity {
 
         LineDataSet lineDataSet = new LineDataSet(lineEntries, "Tuning 1");
         lineDataSet.setLineWidth(2f);
-        // #63c6da
-        lineDataSet.setColor(Color.parseColor("#0492c2"));
+        lineDataSet.setColor(Color.parseColor("#356071"));
         lineDataSet.setDrawValues(false);
         lineDataSet.setDrawCircles(false);
         lineDataSet.setFormLineWidth(1f);
@@ -203,14 +202,9 @@ public class GeneratedGraphViewer extends AppCompatActivity {
         Legend legend = lineChart.getLegend();
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
         legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
-        // legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+//         legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
         legend.setWordWrapEnabled(true);
-        // legend.setDrawInside(false);
-
-        // // get current timestamp
-        // Calendar c = Calendar.getInstance();
-        // SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        // String formattedDate = df.format(c.getTime());
+         legend.setDrawInside(false);
 
         saveGallery.setOnClickListener(new View.OnClickListener() {
             @Override
