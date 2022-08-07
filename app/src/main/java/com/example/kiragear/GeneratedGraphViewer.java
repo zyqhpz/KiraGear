@@ -228,6 +228,9 @@ public class GeneratedGraphViewer extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
+//                lineChart.saveToPath("LineChart_" + epochTime + ".jpg", "/KiraGear");
+//                lineChart.saveToPath("LineChart_" + epochTime + ".jpg", "/Internal storage/KiraGear")
+
                 if (lineChart.saveToGallery("LineChart_" + epochTime + ".jpg", "KiraGear", "",
                         Bitmap.CompressFormat.JPEG, 100)) {
                     Toast.makeText(getBaseContext(), "Chart has been saved!", Toast.LENGTH_SHORT).show();
