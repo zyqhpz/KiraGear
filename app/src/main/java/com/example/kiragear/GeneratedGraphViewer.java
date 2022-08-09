@@ -2,11 +2,15 @@ package com.example.kiragear;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.os.Bundle;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
@@ -19,7 +23,9 @@ import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -114,6 +120,9 @@ public class GeneratedGraphViewer extends AppCompatActivity {
             generateGraph(false);
         }
 
+        Button saveGallery;
+        saveGallery = findViewById(R.id.buttonSaveToGallery);
+
         lineChart = findViewById(R.id.line_chart);
 
         lineChart.setScaleEnabled(false);
@@ -121,7 +130,7 @@ public class GeneratedGraphViewer extends AppCompatActivity {
         LineDataSet progressiveLineDataSet = new LineDataSet(progressiveLineEntries, "Progressive Line Tuning 1");
         progressiveLineDataSet.enableDashedLine(5, 10, 0);
         progressiveLineDataSet.setLineWidth(2f);
-        progressiveLineDataSet.setColor(Color.BLUE);
+        progressiveLineDataSet.setColor(Color.parseColor("#356071"));
         progressiveLineDataSet.setDrawValues(false);
         progressiveLineDataSet.setDrawCircles(false);
         progressiveLineDataSet.setFormLineWidth(1f);
@@ -131,7 +140,7 @@ public class GeneratedGraphViewer extends AppCompatActivity {
 
         LineDataSet lineDataSet = new LineDataSet(lineEntries, "Tuning 1");
         lineDataSet.setLineWidth(2f);
-        lineDataSet.setColor(Color.BLUE);
+        lineDataSet.setColor(Color.parseColor("#356071"));
         lineDataSet.setDrawValues(false);
         lineDataSet.setDrawCircles(false);
         lineDataSet.setFormLineWidth(1f);
@@ -192,10 +201,45 @@ public class GeneratedGraphViewer extends AppCompatActivity {
         // Legend
         Legend legend = lineChart.getLegend();
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
-        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
-        // legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        // legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
+        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
+        legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        // legend.setPosition(Legend.LegendPosition.BELOW_CHART_LEFT);
+        legend.setDrawInside(false);
+
+        legend.setXEntrySpace(35);
+        legend.setYEntrySpace(4);
+        legend.setFormToTextSpace(10);
         legend.setWordWrapEnabled(true);
-        // legend.setDrawInside(false);
+
+        saveGallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // get current timestamp
+                Calendar c = Calendar.getInstance();
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+                // convert to epoch time
+                String formattedDate = df.format(c.getTime());
+                long epochTime = 0;
+                try {
+                    epochTime = df.parse(formattedDate).getTime();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+//                lineChart.saveToPath("LineChart_" + epochTime + ".jpg", "/KiraGear");
+//                lineChart.saveToPath("LineChart_" + epochTime + ".jpg", "/Internal storage/KiraGear")
+
+                if (lineChart.saveToGallery("LineChart_" + epochTime + ".jpg", "KiraGear", "",
+                        Bitmap.CompressFormat.JPEG, 100)) {
+                    Toast.makeText(getBaseContext(), "Chart has been saved!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getBaseContext(), "Saving failed", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
     }
 
     public void generateGraph(boolean isSame) {
@@ -348,11 +392,12 @@ public class GeneratedGraphViewer extends AppCompatActivity {
     }
 
     public class SpeedAxisValueFormatter extends ValueFormatter {
-//        private final BarLineChartBase<?> chart;
         private final LineChart chart;
+
         public SpeedAxisValueFormatter(LineChart chart) {
             this.chart = chart;
         }
+
         @Override
         public String getFormattedValue(float value) {
             return (int) value + "km/h";
@@ -361,17 +406,15 @@ public class GeneratedGraphViewer extends AppCompatActivity {
 
     public class RpmAxisValueFormatter extends ValueFormatter {
         private final LineChart chart;
+
         public RpmAxisValueFormatter(LineChart chart) {
             this.chart = chart;
         }
+
         @Override
         public String getFormattedValue(float value) {
-//            String number = "1000500000.574";
-//            Str
             double amount = Double.parseDouble(String.valueOf(value));
             DecimalFormat formatter = new DecimalFormat("#,###");
-
-//            System.out.println(formatter.format(amount));
             return formatter.format(amount) + "RPM";
         }
     }
