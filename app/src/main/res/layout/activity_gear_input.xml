@@ -16,6 +16,17 @@
         tools:layout_editor_absoluteY="94dp">
 
         <TextView
+            android:id="@+id/titleKiraGear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:text="Kira Gear"
+            android:gravity="center"
+            android:textAllCaps="false"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
             android:id="@+id/tireWidthText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -25,7 +36,7 @@
             android:id="@+id/spinnerTireWidth"
             android:layout_width="212dp"
             android:layout_height="wrap_content"
-            android:textColor="#fff"/>
+            android:textColor="#fff" />
 
         <TextView
             android:id="@+id/tireAspectRatioText"
@@ -357,7 +368,7 @@
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+                android:layout_height="match_parent">
 
                 <LinearLayout
                     android:layout_width="191dp"
