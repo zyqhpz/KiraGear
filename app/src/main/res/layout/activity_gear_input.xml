@@ -12,16 +12,17 @@
         android:layout_width="411dp"
         android:layout_height="637dp"
         android:orientation="vertical"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="94dp">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="1dp">
 
         <TextView
             android:id="@+id/titleKiraGear"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:baselineAligned="false"
-            android:text="Kira Gear"
             android:gravity="center"
+            android:text="Kira Gear"
             android:textAllCaps="false"
             android:textSize="20sp"
             android:textStyle="bold" />
