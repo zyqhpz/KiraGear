@@ -12,8 +12,20 @@
         android:layout_width="411dp"
         android:layout_height="637dp"
         android:orientation="vertical"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="94dp">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="1dp">
+
+        <TextView
+            android:id="@+id/titleKiraGear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:gravity="center"
+            android:text="Kira Gear"
+            android:textAllCaps="false"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tireWidthText"
@@ -25,7 +37,7 @@
             android:id="@+id/spinnerTireWidth"
             android:layout_width="212dp"
             android:layout_height="wrap_content"
-            android:textColor="#fff"/>
+            android:textColor="#fff" />
 
         <TextView
             android:id="@+id/tireAspectRatioText"
@@ -69,11 +81,15 @@
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+                android:layout_height="match_parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/linearLayout"
-                    android:layout_width="match_parent"
+                    android:layout_width="77dp"
+                    android:layout_height="match_parent" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="131dp"
                     android:layout_height="match_parent">
 
                     <TextView
@@ -87,7 +103,7 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="123dp"
                     android:layout_height="match_parent">
 
                     <TextView
@@ -105,32 +121,41 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <LinearLayout
-                    android:layout_width="176dp"
-                    android:layout_height="wrap_content">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="58dp"
+                    android:layout_height="match_parent">
 
                     <TextView
                         android:id="@+id/tuningOneGearOneLabel"
-                        android:layout_width="61dp"
-                        android:layout_height="wrap_content"
+                        android:layout_width="64dp"
+                        android:layout_height="23dp"
                         android:text="Gear 1:"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/black"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <LinearLayout
+                    android:layout_width="109dp"
+                    android:layout_height="wrap_content">
 
                     <EditText
                         android:id="@+id/tuningOneGearOneRatioInput"
-                        android:layout_width="115dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
                         android:inputType="numberDecimal" />
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="179dp"
+                    android:layout_width="144dp"
                     android:layout_height="wrap_content">
 
                     <EditText
                         android:id="@+id/tuningTwoGearOneRatioInput"
-                        android:layout_width="114dp"
+                        android:layout_width="143dp"
                         android:layout_height="wrap_content"
                         android:ems="10"
                         android:inputType="numberDecimal" />
@@ -138,35 +163,45 @@
             </TableRow>
 
             <TableRow
-                android:layout_width="match_parent"
+                android:layout_width="386dp"
                 android:layout_height="match_parent">
 
-                <LinearLayout
-                    android:layout_width="148dp"
-                    android:layout_height="wrap_content">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="101dp"
+                    android:layout_height="match_parent">
 
                     <TextView
                         android:id="@+id/tuningOneGearTwoLabel"
                         android:layout_width="61dp"
                         android:layout_height="wrap_content"
                         android:text="Gear 2:"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/black"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.504"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <LinearLayout
+                    android:layout_width="124dp"
+                    android:layout_height="wrap_content">
 
                     <EditText
                         android:id="@+id/tuningOneGearTwoRatioInput"
-                        android:layout_width="116dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
                         android:inputType="numberDecimal" />
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="148dp"
+                    android:layout_width="134dp"
                     android:layout_height="wrap_content">
 
                     <EditText
                         android:id="@+id/tuningTwoGearTwoRatioInput"
-                        android:layout_width="115dp"
+                        android:layout_width="143dp"
                         android:layout_height="wrap_content"
                         android:ems="10"
                         android:inputType="numberDecimal" />
@@ -177,7 +212,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
@@ -186,11 +221,20 @@
                         android:layout_width="61dp"
                         android:layout_height="wrap_content"
                         android:text="Gear 3:"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/black"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
                     <EditText
                         android:id="@+id/tuningOneGearThreeRatioInput"
-                        android:layout_width="116dp"
+                        android:layout_width="154dp"
                         android:layout_height="wrap_content"
                         android:ems="10"
                         android:inputType="numberDecimal" />
@@ -202,7 +246,7 @@
 
                     <EditText
                         android:id="@+id/tuningTwoGearThreeRatioInput"
-                        android:layout_width="115dp"
+                        android:layout_width="143dp"
                         android:layout_height="wrap_content"
                         android:ems="10"
                         android:inputType="numberDecimal" />
@@ -213,20 +257,29 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <LinearLayout
-                    android:layout_width="153dp"
-                    android:layout_height="wrap_content">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
                     <TextView
                         android:id="@+id/tuningOneGearFourLabel"
                         android:layout_width="61dp"
                         android:layout_height="wrap_content"
                         android:text="Gear 4:"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/black"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <LinearLayout
+                    android:layout_width="122dp"
+                    android:layout_height="wrap_content">
 
                     <EditText
                         android:id="@+id/tuningOneGearFourRatioInput"
-                        android:layout_width="116dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
                         android:inputType="numberDecimal" />
@@ -238,7 +291,7 @@
 
                     <EditText
                         android:id="@+id/tuningTwoGearFourRatioInput"
-                        android:layout_width="115dp"
+                        android:layout_width="142dp"
                         android:layout_height="wrap_content"
                         android:ems="10"
                         android:inputType="numberDecimal" />
@@ -249,20 +302,29 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <LinearLayout
-                    android:layout_width="153dp"
-                    android:layout_height="wrap_content">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
                     <TextView
                         android:id="@+id/tuningOneGearFiveLabel"
                         android:layout_width="61dp"
                         android:layout_height="wrap_content"
                         android:text="Gear 5:"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/black"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <LinearLayout
+                    android:layout_width="153dp"
+                    android:layout_height="wrap_content">
 
                     <EditText
                         android:id="@+id/tuningOneGearFiveRatioInput"
-                        android:layout_width="117dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
                         android:inputType="numberDecimal" />
@@ -274,7 +336,7 @@
 
                     <EditText
                         android:id="@+id/tuningTwoGearFiveRatioInput"
-                        android:layout_width="116dp"
+                        android:layout_width="141dp"
                         android:layout_height="wrap_content"
                         android:ems="10"
                         android:inputType="numberDecimal" />
@@ -307,7 +369,7 @@
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+                android:layout_height="match_parent">
 
                 <LinearLayout
                     android:layout_width="191dp"
